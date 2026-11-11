@@ -1,0 +1,25 @@
+spot_id,name,description
+study1,Study Cafe,"Quiet cafe with coffee, wifi, power outlets and tables for studying or reading."
+study2,Reading Room,"Silent library room with desks, internet and space to concentrate on homework."
+music1,Stage Cafe,"Lively cafe with live bands, loud music and coffee in the evening."
+music2,Evening Venue,"Indoor venue for concerts, dancing and local musicians performing at night."
+playground1,Play Meadow,"Family park with playground swings, slides, picnic tables and grass for children."
+playground2,Kids Garden,Outdoor play area with climbing equipment and picnic benches for families with kids.
+hiking1,Ridge Trail,"Long wooded hiking trail with steep hills, forest paths and scenic overlooks."
+hiking2,Forest Loop,Nature walking route through trees with challenging climbs and views of the valley.
+history1,Heritage House,"History museum with exhibits about the city, early settlers and historic buildings."
+history2,Old Town Exhibit,Indoor collection of historical documents and artifacts explaining local life in the past.
+art1,Canvas Gallery,"Art gallery showing paintings, sculpture and contemporary work by local artists."
+art2,Color Studio,"Indoor exhibition of drawings, pottery and visual art with rotating artist displays."
+antiques1,Attic Shop,"Antique shop selling vintage furniture, old collectibles and secondhand decorations."
+antiques2,Past Finds,"Store with retro household items, used ornaments and collectible objects from earlier decades."
+crafts1,Makers Market,"Shop selling handmade gifts, jewelry, candles and crafts made by local makers."
+crafts2,Gift Workshop,"Small store with handcrafted souvenirs, woven goods and locally produced accessories."
+budgetfood1,Taco Counter,Budget food counter serving inexpensive tacos and quick filling meals.
+budgetfood2,Noodle Stand,Casual takeaway stall with low priced noodles and affordable lunch portions.
+patio1,Patio Kitchen,Restaurant with outdoor patio tables serving dinner in an open air courtyard.
+patio2,Terrace Bistro,"Dining terrace with outdoor seating, lunch service and tables under the sky."
+rain1,Puzzle Room,Indoor escape room with puzzles and team challenges for rainy day activities.
+rain2,Game Hall,Indoor board game lounge with tabletop games and group entertainment sheltered from rain.
+water1,Paddle Dock,Waterfront rental for kayaks and canoes with paddling trips along the river.
+water2,Lake Launch,Lakeside boat launch offering canoe hire and kayaking on calm water.

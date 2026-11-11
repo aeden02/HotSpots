@@ -1,0 +1,49 @@
+method,query_id,query,relevant_ids,top3,precision_at_3,recall_at_3,hit_at_1,reciprocal_rank
+word2vec,study-9,finish homework over a cup of coffee,study1|study2,study1|study2|music1,0.6666666666666666,1.0,1.0,1.0
+word2vec,study-10,a peaceful desk where I can focus,study1|study2,study2|study1|rain1,0.6666666666666666,1.0,1.0,1.0
+word2vec,music-9,watch a band while drinking coffee,music1|music2,music1|study1|music2,0.6666666666666666,1.0,1.0,1.0
+word2vec,music-10,an evening of dancing and songs,music1|music2,music2|music1|rain2,0.6666666666666666,1.0,1.0,1.0
+word2vec,playground-9,let the kids burn off energy on slides,playground1|playground2,playground1|playground2|rain2,0.6666666666666666,1.0,1.0,1.0
+word2vec,playground-10,eat outdoors while children use climbing equipment,playground1|playground2,playground2|playground1|rain1,0.6666666666666666,1.0,1.0,1.0
+word2vec,hiking-9,spend the afternoon trekking through forest,hiking1|hiking2,hiking2|hiking1|rain1,0.6666666666666666,1.0,1.0,1.0
+word2vec,hiking-10,exercise on a steep path surrounded by trees,hiking1|hiking2,hiking2|hiking1|playground1,0.6666666666666666,1.0,1.0,1.0
+word2vec,history-9,explore the city past through artifacts,history1|history2,history2|history1|antiques2,0.6666666666666666,1.0,1.0,1.0
+word2vec,history-10,learn about settlers and the old town,history1|history2,history1|history2|playground2,0.6666666666666666,1.0,1.0,1.0
+word2vec,art-9,browse colorful artwork and pottery,art1|art2,art2|art1|antiques1,0.6666666666666666,1.0,1.0,1.0
+word2vec,art-10,see creative drawings in a gallery,art1|art2,art1|art2|history2,0.6666666666666666,1.0,1.0,1.0
+word2vec,antiques-9,hunt for secondhand treasures and ornaments,antiques1|antiques2,antiques1|antiques2|crafts2,0.6666666666666666,1.0,1.0,1.0
+word2vec,antiques-10,buy a retro chair for my home,antiques1|antiques2,antiques1|antiques2|rain2,0.6666666666666666,1.0,1.0,1.0
+word2vec,crafts-9,take home something made by a local maker,crafts1|crafts2,crafts1|antiques2|crafts2,0.6666666666666666,1.0,1.0,1.0
+word2vec,crafts-10,purchase handmade jewelry as a present,crafts1|crafts2,crafts2|crafts1|antiques1,0.6666666666666666,1.0,1.0,1.0
+word2vec,budgetfood-9,grab a filling meal for little money,budgetfood1|budgetfood2,budgetfood1|budgetfood2|playground2,0.6666666666666666,1.0,1.0,1.0
+word2vec,budgetfood-10,save money on tacos or noodles,budgetfood1|budgetfood2,budgetfood1|budgetfood2|patio1,0.6666666666666666,1.0,1.0,1.0
+word2vec,patio-9,sit under the sky while eating,patio1|patio2,patio2|budgetfood2|playground2,0.3333333333333333,0.5,1.0,1.0
+word2vec,patio-10,have a meal outside in a courtyard,patio1|patio2,patio1|patio2|playground2,0.6666666666666666,1.0,1.0,1.0
+word2vec,rain-9,stay dry while solving a group challenge,rain1|rain2,rain1|hiking2|rain2,0.6666666666666666,1.0,1.0,1.0
+word2vec,rain-10,friends want tabletop entertainment when it rains,rain1|rain2,rain2|playground2|playground1,0.3333333333333333,0.5,1.0,1.0
+word2vec,water-9,spend time on the water in a small boat,water1|water2,water2|water1|rain1,0.6666666666666666,1.0,1.0,1.0
+word2vec,water-10,hire paddling equipment by the lake,water1|water2,water2|water1|playground2,0.6666666666666666,1.0,1.0,1.0
+keyword,study-9,finish homework over a cup of coffee,study1|study2,study2|music1|study1,0.6666666666666666,1.0,1.0,1.0
+keyword,study-10,a peaceful desk where I can focus,study1|study2,,0.0,0.0,0.0,0.0
+keyword,music-9,watch a band while drinking coffee,music1|music2,music1|study1|study2,0.3333333333333333,0.5,1.0,1.0
+keyword,music-10,an evening of dancing and songs,music1|music2,music2|music1|study1,0.6666666666666666,1.0,1.0,1.0
+keyword,playground-9,let the kids burn off energy on slides,playground1|playground2,playground2|playground1|study1,0.6666666666666666,1.0,1.0,1.0
+keyword,playground-10,eat outdoors while children use climbing equipment,playground1|playground2,playground2|playground1|study1,0.6666666666666666,1.0,1.0,1.0
+keyword,hiking-9,spend the afternoon trekking through forest,hiking1|hiking2,hiking2|hiking1|study1,0.6666666666666666,1.0,1.0,1.0
+keyword,hiking-10,exercise on a steep path surrounded by trees,hiking1|hiking2,hiking2|hiking1|art1,0.6666666666666666,1.0,1.0,1.0
+keyword,history-9,explore the city past through artifacts,history1|history2,history2|hiking2|history1,0.6666666666666666,1.0,1.0,1.0
+keyword,history-10,learn about settlers and the old town,history1|history2,history1|history2|antiques1,0.6666666666666666,1.0,1.0,1.0
+keyword,art-9,browse colorful artwork and pottery,art1|art2,art2|study1|study2,0.3333333333333333,0.5,1.0,1.0
+keyword,art-10,see creative drawings in a gallery,art1|art2,art1|art2|study1,0.6666666666666666,1.0,1.0,1.0
+keyword,antiques-9,hunt for secondhand treasures and ornaments,antiques1|antiques2,antiques1|antiques2|study1,0.6666666666666666,1.0,1.0,1.0
+keyword,antiques-10,buy a retro chair for my home,antiques1|antiques2,antiques2|study1|study2,0.3333333333333333,0.5,1.0,1.0
+keyword,crafts-9,take home something made by a local maker,crafts1|crafts2,crafts1|art1|music2,0.3333333333333333,0.5,1.0,1.0
+keyword,crafts-10,purchase handmade jewelry as a present,crafts1|crafts2,crafts1|study1|study2,0.3333333333333333,0.5,1.0,1.0
+keyword,budgetfood-9,grab a filling meal for little money,budgetfood1|budgetfood2,budgetfood1|study1|study2,0.3333333333333333,0.5,1.0,1.0
+keyword,budgetfood-10,save money on tacos or noodles,budgetfood1|budgetfood2,budgetfood2|budgetfood1|study1,0.6666666666666666,1.0,1.0,1.0
+keyword,patio-9,sit under the sky while eating,patio1|patio2,patio2|study1|study2,0.3333333333333333,0.5,1.0,1.0
+keyword,patio-10,have a meal outside in a courtyard,patio1|patio2,patio1|study1|study2,0.3333333333333333,0.5,1.0,1.0
+keyword,rain-9,stay dry while solving a group challenge,rain1|rain2,rain2|study1|study2,0.3333333333333333,0.5,1.0,1.0
+keyword,rain-10,friends want tabletop entertainment when it rains,rain1|rain2,rain2|study1|study2,0.3333333333333333,0.5,1.0,1.0
+keyword,water-9,spend time on the water in a small boat,water1|water2,water2|crafts2|study1,0.3333333333333333,0.5,1.0,1.0
+keyword,water-10,hire paddling equipment by the lake,water1|water2,water2|water1|playground2,0.6666666666666666,1.0,1.0,1.0
