@@ -34,18 +34,25 @@ export default function HomePage() {
   }
 
   return (
-    <section>
-      <h1>Find the spots locals love</h1>
-      <p>Pick a city to start exploring.</p>
-      <form onSubmit={handleSubmit} className="city-form">
-        <label htmlFor="city">City</label>
-        <select id="city" value={selected} onChange={(e) => setSelected(e.target.value)}>
-          {cities.map((city) => (
-            <option key={city.id} value={city.id}>{city.name}</option>
-          ))}
-        </select>
-        <button type="submit">Explore</button>
-      </form>
+    <section className="home">
+      <div className="city-card">
+        <h1>Find the spots locals love</h1>
+        <p>Pick a city to start exploring.</p>
+
+        <form onSubmit={handleSubmit} className="city-form">
+         
+          <label htmlFor="city">City</label>
+
+          <select id="city" value={selected} onChange={(e) => setSelected(e.target.value)}>
+            {cities.map((city) => (
+              <option key={city.id} value={city.id}>{city.name}</option>
+            ))}
+         </select>
+        
+         <button type="submit">Explore</button>
+
+       </form>
+      </div>
     </section>
   )
 }

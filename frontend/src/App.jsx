@@ -1,21 +1,28 @@
-import { BrowserRouter, Routes, Route, Link } from 'react-router'
+import { BrowserRouter, Routes, Route, Link, NavLink } from 'react-router'
 import HomePage from './pages/HomePage'
 import SpotListPage from './pages/SpotListPage'
-import SpotDetailPage from './pages/SpotDetailPage'
+import SpotDetailModal from './components/SpotDetailModal'
 import NotFoundPage from './pages/NotFoundPage'
 
 export default function App() {
   return (
     <BrowserRouter>
-      <header className="site-header">
+     <div className="app-layout">
+      <header className="sidebar">
         <Link to="/" className="logo">HotSpots</Link>
+        <nav aria-label="Main">
+          <NavLink to="/" end className="nav-link">Home</NavLink>
+         { /*===ADD SIGN IN===*/}
+        </nav>
       </header>
-
+      
+     <div className="content"> 
       <main className="container">
         <Routes>
           <Route path="/" element={<HomePage />} />
-          <Route path="/cities/:cityId" element={<SpotListPage />} />
-          <Route path="/spots/:spotId" element={<SpotDetailPage />} />
+          <Route path="/cities/:cityId" element={<SpotListPage />} >
+            <Route path="spots/:spotId" element={<SpotDetailModal />} />
+          </Route>
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </main>
@@ -23,6 +30,8 @@ export default function App() {
       <footer className="site-footer">
         Map data © OpenStreetMap contributors
       </footer>
+      </div>
+    </div>
     </BrowserRouter>
   )
 }
