@@ -37,7 +37,7 @@ export const spots = [
     {
         _id: '4',
         city: 'fort-smith',
-        name: 'Sample Local Café',
+        name: 'Fort Smith Coffee Co.',
         category: 'food',
         description: 'Sample description: a quiet neighborhood café that is good for studying.',
         address: 'Fort Smith, AR',
@@ -47,7 +47,7 @@ export const spots = [
     {
         _id: '5',
         city: 'fort-smith',
-        name: 'Sample Vintage Shop',
+        name: 'Belle Starr Antiques',
         category: 'shops',
         description: 'Sample description: a small shop with secondhand clothes and local goods.',
         address: 'Fort Smith, AR',
