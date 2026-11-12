@@ -1,0 +1,21 @@
+{
+  "model": "word2vec-google-news-300",
+  "vector_size": 300,
+  "spots": 24,
+  "test_queries": 24,
+  "data_notice": "Assistant-authored fictional fixtures, not independent user judgments.",
+  "word2vec": {
+    "precision_at_3": 0.6388888888888888,
+    "recall_at_3": 0.9583333333333334,
+    "hit_at_1": 1.0,
+    "reciprocal_rank": 1.0,
+    "mean_query_ms": 0.03958749584853649
+  },
+  "keyword": {
+    "precision_at_3": 0.4861111111111111,
+    "recall_at_3": 0.7291666666666666,
+    "hit_at_1": 0.9583333333333334,
+    "reciprocal_rank": 0.9583333333333334,
+    "mean_query_ms": 0.03145415879165133
+  }
+}

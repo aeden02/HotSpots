@@ -1,0 +1,121 @@
+query_id,query,relevant_ids,split,intent
+study-1,quiet place to study,study1|study2,train,study
+study-2,coffee and wifi for homework,study1|study2,train,study
+study-3,a silent room to read,study1|study2,train,study
+study-4,somewhere to concentrate with internet,study1|study2,train,study
+study-5,tables and outlets for my laptop,study1|study2,train,study
+study-6,peaceful space for school work,study1|study2,train,study
+study-7,a calm room for studying with wifi,study1|study2,validation,study
+study-8,where can I read without noise,study1|study2,validation,study
+study-9,finish homework over a cup of coffee,study1|study2,test,study
+study-10,a peaceful desk where I can focus,study1|study2,test,study
+music-1,live music tonight,music1|music2,train,music
+music-2,a place to dance,music1|music2,train,music
+music-3,hear a local band,music1|music2,train,music
+music-4,loud lively evening entertainment,music1|music2,train,music
+music-5,coffee while musicians perform,music1|music2,train,music
+music-6,somewhere for a concert,music1|music2,train,music
+music-7,night entertainment with live bands,music1|music2,validation,music
+music-8,listen to musicians in a lively cafe,music1|music2,validation,music
+music-9,watch a band while drinking coffee,music1|music2,test,music
+music-10,an evening of dancing and songs,music1|music2,test,music
+playground-1,take children to a playground,playground1|playground2,train,playground
+playground-2,swings and slides for kids,playground1|playground2,train,playground
+playground-3,outdoor family play area,playground1|playground2,train,playground
+playground-4,a picnic with young children,playground1|playground2,train,playground
+playground-5,somewhere kids can climb and play,playground1|playground2,train,playground
+playground-6,family park with benches,playground1|playground2,train,playground
+playground-7,children want to play on swings,playground1|playground2,validation,playground
+playground-8,a park for a family picnic and play,playground1|playground2,validation,playground
+playground-9,let the kids burn off energy on slides,playground1|playground2,test,playground
+playground-10,eat outdoors while children use climbing equipment,playground1|playground2,test,playground
+hiking-1,go hiking in the woods,hiking1|hiking2,train,hiking
+hiking-2,challenging nature walk,hiking1|hiking2,train,hiking
+hiking-3,a long forest trail,hiking1|hiking2,train,hiking
+hiking-4,steep hills to climb,hiking1|hiking2,train,hiking
+hiking-5,scenic overlooks on foot,hiking1|hiking2,train,hiking
+hiking-6,walking paths through trees,hiking1|hiking2,train,hiking
+hiking-7,hike up hills for a valley view,hiking1|hiking2,validation,hiking
+hiking-8,a challenging wooded walking route,hiking1|hiking2,validation,hiking
+hiking-9,spend the afternoon trekking through forest,hiking1|hiking2,test,hiking
+hiking-10,exercise on a steep path surrounded by trees,hiking1|hiking2,test,hiking
+history-1,learn local history,history1|history2,train,history
+history-2,museum about early settlers,history1|history2,train,history
+history-3,historic artifacts and documents,history1|history2,train,history
+history-4,how did people live in the past,history1|history2,train,history
+history-5,exhibits about old buildings,history1|history2,train,history
+history-6,understand the history of this city,history1|history2,train,history
+history-7,see historical documents in a museum,history1|history2,validation,history
+history-8,discover stories about early local life,history1|history2,validation,history
+history-9,explore the city past through artifacts,history1|history2,test,history
+history-10,learn about settlers and the old town,history1|history2,test,history
+art-1,look at local paintings,art1|art2,train,art
+art-2,visit an art gallery,art1|art2,train,art
+art-3,see sculpture indoors,art1|art2,train,art
+art-4,contemporary visual art exhibition,art1|art2,train,art
+art-5,drawings and pottery on display,art1|art2,train,art
+art-6,discover work by artists,art1|art2,train,art
+art-7,paintings and sculpture from local artists,art1|art2,validation,art
+art-8,an indoor display of visual artwork,art1|art2,validation,art
+art-9,browse colorful artwork and pottery,art1|art2,test,art
+art-10,see creative drawings in a gallery,art1|art2,test,art
+antiques-1,shop for antiques,antiques1|antiques2,train,antiques
+antiques-2,find vintage furniture,antiques1|antiques2,train,antiques
+antiques-3,buy old collectibles,antiques1|antiques2,train,antiques
+antiques-4,browse retro household items,antiques1|antiques2,train,antiques
+antiques-5,secondhand decorations for my house,antiques1|antiques2,train,antiques
+antiques-6,used ornaments from the past,antiques1|antiques2,train,antiques
+antiques-7,a store selling vintage household decorations,antiques1|antiques2,validation,antiques
+antiques-8,old furniture and retro collectibles,antiques1|antiques2,validation,antiques
+antiques-9,hunt for secondhand treasures and ornaments,antiques1|antiques2,test,antiques
+antiques-10,buy a retro chair for my home,antiques1|antiques2,test,antiques
+crafts-1,buy handmade gifts,crafts1|crafts2,train,crafts
+crafts-2,locally made souvenirs,crafts1|crafts2,train,crafts
+crafts-3,shop for handcrafted jewelry,crafts1|crafts2,train,crafts
+crafts-4,crafts from local makers,crafts1|crafts2,train,crafts
+crafts-5,find woven goods and candles,crafts1|crafts2,train,crafts
+crafts-6,small store for handmade accessories,crafts1|crafts2,train,crafts
+crafts-7,gifts made by local craftspeople,crafts1|crafts2,validation,crafts
+crafts-8,handcrafted souvenirs and candles,crafts1|crafts2,validation,crafts
+crafts-9,take home something made by a local maker,crafts1|crafts2,test,crafts
+crafts-10,purchase handmade jewelry as a present,crafts1|crafts2,test,crafts
+budgetfood-1,cheap place to eat,budgetfood1|budgetfood2,train,budgetfood
+budgetfood-2,inexpensive lunch,budgetfood1|budgetfood2,train,budgetfood
+budgetfood-3,affordable quick meal,budgetfood1|budgetfood2,train,budgetfood
+budgetfood-4,budget tacos,budgetfood1|budgetfood2,train,budgetfood
+budgetfood-5,low priced noodles to take away,budgetfood1|budgetfood2,train,budgetfood
+budgetfood-6,filling food without spending much,budgetfood1|budgetfood2,train,budgetfood
+budgetfood-7,a quick lunch on a small budget,budgetfood1|budgetfood2,validation,budgetfood
+budgetfood-8,inexpensive takeaway food,budgetfood1|budgetfood2,validation,budgetfood
+budgetfood-9,grab a filling meal for little money,budgetfood1|budgetfood2,test,budgetfood
+budgetfood-10,save money on tacos or noodles,budgetfood1|budgetfood2,test,budgetfood
+patio-1,eat dinner outside,patio1|patio2,train,patio
+patio-2,restaurant with a patio,patio1|patio2,train,patio
+patio-3,outdoor seating for lunch,patio1|patio2,train,patio
+patio-4,open air dining,patio1|patio2,train,patio
+patio-5,a meal on a terrace,patio1|patio2,train,patio
+patio-6,courtyard restaurant tables,patio1|patio2,train,patio
+patio-7,dinner at outdoor patio tables,patio1|patio2,validation,patio
+patio-8,lunch on an open air terrace,patio1|patio2,validation,patio
+patio-9,sit under the sky while eating,patio1|patio2,test,patio
+patio-10,have a meal outside in a courtyard,patio1|patio2,test,patio
+rain-1,indoor fun on a rainy day,rain1|rain2,train,rain
+rain-2,solve puzzles with friends,rain1|rain2,train,rain
+rain-3,play board games indoors,rain1|rain2,train,rain
+rain-4,escape room team challenge,rain1|rain2,train,rain
+rain-5,group entertainment away from the rain,rain1|rain2,train,rain
+rain-6,tabletop game lounge,rain1|rain2,train,rain
+rain-7,a rainy afternoon playing games with friends,rain1|rain2,validation,rain
+rain-8,indoor team puzzle activities,rain1|rain2,validation,rain
+rain-9,stay dry while solving a group challenge,rain1|rain2,test,rain
+rain-10,friends want tabletop entertainment when it rains,rain1|rain2,test,rain
+water-1,rent a kayak,water1|water2,train,water
+water-2,go canoeing on the river,water1|water2,train,water
+water-3,paddle on a lake,water1|water2,train,water
+water-4,waterfront boat rental,water1|water2,train,water
+water-5,hire a canoe for a trip,water1|water2,train,water
+water-6,kayaking on calm water,water1|water2,train,water
+water-7,rent a canoe for river paddling,water1|water2,validation,water
+water-8,a lakeside place to launch a kayak,water1|water2,validation,water
+water-9,spend time on the water in a small boat,water1|water2,test,water
+water-10,hire paddling equipment by the lake,water1|water2,test,water

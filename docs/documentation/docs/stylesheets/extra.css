@@ -1,0 +1,48 @@
+/* Razorback red + white. Light overrides on top of Material defaults. */
+:root,
+[data-md-color-scheme="default"] {
+  --md-primary-fg-color: #9d2235;
+  --md-primary-fg-color--light: #b8394b;
+  --md-primary-fg-color--dark: #7a1a29;
+  --md-primary-bg-color: #ffffff;
+  --md-primary-bg-color--light: #ffffffcc;
+  --md-accent-fg-color: #9d2235;
+  --md-typeset-a-color: #9d2235;
+}
+
+/* Quiet header: no shadow */
+.md-header, .md-tabs { box-shadow: none; }
+
+/* Slightly more readable content */
+.md-typeset { font-size: .8rem; line-height: 1.7; }
+.md-typeset h1 { font-weight: 700; color: #1f1f23; margin-bottom: 1rem; }
+.md-typeset h2 { font-weight: 600; }
+
+/* Home-page cards */
+.md-typeset .grid.cards > ul > li,
+.md-typeset .grid > .card {
+  border: 1px solid #e5e5e7;
+  border-radius: 8px;
+  box-shadow: none;
+}
+.md-typeset .grid.cards > ul > li:hover,
+.md-typeset .grid > .card:hover { border-color: #9d2235; box-shadow: none; }
+
+/* Tables */
+.md-typeset table:not([class]) { box-shadow: none; border: 1px solid #e5e5e7; }
+
+/* Hide the default logo glyph; the site name stands alone */
+.md-header__button.md-logo { display: none; }
+.md-header__title { margin-left: 0; }
+
+/* Light footer instead of Material's dark one */
+.md-footer { background: #ffffff; color: #3c3c43; border-top: 1px solid #e5e5e7; }
+.md-footer__link, .md-footer__title, .md-footer__direction { color: #3c3c43; }
+.md-footer__link:hover { color: #9d2235; }
+
+/* Three evenly sized cards on the home page */
+.md-typeset .grid.cards > ul {
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+}
+.md-footer-meta { background: #ffffff; }
+.md-header__title { margin-left: -.5rem; }
