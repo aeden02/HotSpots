@@ -20,7 +20,7 @@ export default function App() {
       <main className="container">
         <Routes>
           <Route path="/" element={<HomePage />} />
-          <Route path="/cities/:cityId" element={<SpotListPage />} >
+          <Route path="/cities/:city" element={<SpotListPage />} >
             <Route path="spots/:spotId" element={<SpotDetailModal />} />
           </Route>
           <Route path="*" element={<NotFoundPage />} />

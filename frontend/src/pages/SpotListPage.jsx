@@ -1,19 +1,18 @@
 import { useEffect, useState } from 'react'
 import { Link, Outlet, useParams } from 'react-router'
-import { getSpots } from '../api/spots'
-import { cityName } from '../utils/categories'
+import { getSpotsByCity } from '../api/API'
 import SpotCard from '../components/SpotCard'
 
 
 export default function SpotListPage() {
-   const { cityId } = useParams()
+   const { city } = useParams()
    const [spots, setSpots] = useState([])
    const [status, setStatus] = useState('loading') // loading, ready, error 
    const [reloadKey, setReloadKey] = useState(0)
 
     useEffect(() => {
         let ignore = false 
-        getSpots(cityId)
+        getSpotsByCity(city)
             .then((data)=> {
                 if(!ignore){
                     setSpots(data)
@@ -24,7 +23,7 @@ export default function SpotListPage() {
                 console.error('Failed to load spots: ', error)
                 if (!ignore) setStatus('error')
             })
-        return () => { ignore = true }  }, [cityId, reloadKey])
+        return () => { ignore = true }  }, [city, reloadKey])
 
         function retry(){
             setStatus('loading')
@@ -47,14 +46,14 @@ export default function SpotListPage() {
         return (
             <section>
                 <Link to="/" className="back-link">Change city</Link>
-                <h1>Spots in {cityName(cityId)}</h1>
+                <h1>Spots in {city}</h1>
                 
                 {spots.length === 0 ? (
                     <p className="status">No spots in this city yet.</p>
                 ) : (
                     <div className="spot-grid">
                         {spots.map((spot)=> (
-                            <SpotCard key={spot._id} spot={spot} />
+                            <SpotCard key={spot.id} spot={spot} />
                     ))}
                     </div>
                 )}
