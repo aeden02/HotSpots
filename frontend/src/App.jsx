@@ -1,10 +1,28 @@
+import { useEffect, useState } from 'react'
 import { BrowserRouter, Routes, Route, Link, NavLink } from 'react-router'
 import HomePage from './pages/HomePage'
 import SpotListPage from './pages/SpotListPage'
 import SpotDetailModal from './components/SpotDetailModal'
 import NotFoundPage from './pages/NotFoundPage'
+import LoginPage from './pages/LoginPage'
+import RegisterPage from './pages/RegisterPage'
+import { getMe, logout } from './api/API'
+
 
 export default function App() {
+  const [user, setUser] = useState(null) //null = no one signed in. 
+
+  useEffect(() => {
+    getMe()
+      .then((me) => setUser(me))
+      .catch(() => setUser(null)) //backend = 401 when no sign in. 
+  }, [])
+
+  async function handleSignOut(){
+    await logout()
+    setUser(null)
+  }
+
   return (
     <BrowserRouter>
      <div className="app-layout">
@@ -12,7 +30,17 @@ export default function App() {
         <Link to="/" className="logo">HotSpots</Link>
         <nav aria-label="Main">
           <NavLink to="/" end className="nav-link">Home</NavLink>
-         { /*===ADD SIGN IN===*/}
+         {user ? (
+          <>
+            <span className="nav-link">Signed in as {user.username}</span> 
+            <button type="button" onClick={handleSignOut}>Sign out</button>
+          </>
+         ) : (
+          <>
+            <NavLink to="/login" className="nav-link">Sign in</NavLink>
+            <NavLink to="/register" className="nav-link">Create account</NavLink>
+          </>
+         )}
         </nav>
       </header>
       
@@ -20,7 +48,9 @@ export default function App() {
       <main className="container">
         <Routes>
           <Route path="/" element={<HomePage />} />
-          <Route path="/cities/:cityId" element={<SpotListPage />} >
+          <Route path="/login" element={<LoginPage setUser={setUser} />} />
+          <Route path="/register" element={<RegisterPage setUser={setUser} />} />
+          <Route path="/cities/:city" element={<SpotListPage />} >
             <Route path="spots/:spotId" element={<SpotDetailModal />} />
           </Route>
           <Route path="*" element={<NotFoundPage />} />

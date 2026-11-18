@@ -1,6 +1,7 @@
 const express = require('express');
 const { ObjectId } = require('mongodb');
 const crypto = require('crypto');
+const getOsmSpots = require('../tools/osmSpots');
 
 const SLUG_CHARS = 'abcdefghijklmnopqrstuvwxyz0123456789';
 
@@ -11,8 +12,43 @@ function makeSlug(title) {
     return `${base}-${suffix}`;
 }
 
+// Fills an empty city with spots from OpenStreetMap. Returns null if the city doesn't exist
+// or already has spots (or is already being seeded), otherwise the inserted spot ids.
+async function seedCity(db, cityName) {
+    const cities = db.collection('cities');
+    // Atomically claim the city so two concurrent calls can't both seed it.
+    const city = await cities.findOneAndUpdate(
+        { name: cityName, spots: { $size: 0 }, seeding: { $ne: true } },
+        { $set: { seeding: true } }
+    );
+    if (!city) return null;
+    try {
+        const osmSpots = await getOsmSpots(city.name);
+        const docs = osmSpots.map(s => ({ id: makeSlug(s.title), ...s, city: city.name, createdBy: null, ratings: [], events: [] }));
+        if (docs.length) await db.collection('spots').insertMany(docs);
+        await cities.updateOne({ _id: city._id }, { $push: { spots: { $each: docs.map(d => d.id) } } });
+        return docs.map(d => d.id);
+    } finally {
+        await cities.updateOne({ _id: city._id }, { $unset: { seeding: '' } });
+    }
+}
+
 module.exports = (db) => {
     const router = express.Router();
+
+    router.post('/seedCity', async (req, res) => {
+        const { city } = req.body;
+        if (typeof city !== 'string' || !city.trim()) return res.status(400).json({ error: 'City is required.' });
+        const existing = await db.collection('cities').findOne({ name: city });
+        if (!existing) return res.status(404).json({ error: 'City not found.' });
+        try {
+            const ids = await seedCity(db, city);
+            if (!ids) return res.status(409).json({ error: 'City already has spots.' });
+            res.status(201).json({ message: `Added ${ids.length} spots.`, ids });
+        } catch (err) {
+            res.status(502).json({ error: err.message });
+        }
+    });
 
     router.get('/getSpot/:slug', async (req, res) => {
         const spot = await db.collection('spots').findOne({ id: req.params.slug });
@@ -54,3 +90,5 @@ module.exports = (db) => {
 
     return router;
 };
+
+module.exports.seedCity = seedCity;

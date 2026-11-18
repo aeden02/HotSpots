@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router'
-import { getCities } from '../api/spots'
+import { getCities } from '../api/API'
 
 export default function HomePage() {
   const [cities, setCities] = useState([])
@@ -12,7 +12,7 @@ export default function HomePage() {
     getCities()
       .then((data) => {
         setCities(data)
-        setSelected(data[0]?.id ?? '')
+        setSelected(data[0]?.name ?? '')
         setStatus('ready')
       })
       .catch(() => setStatus('error'))
@@ -20,7 +20,7 @@ export default function HomePage() {
 
   function handleSubmit(event) {
     event.preventDefault()
-    if (selected) navigate(`/cities/${selected}`)
+    if (selected) navigate(`/cities/${encodeURIComponent(selected)}`)
   }
 
   if (status === 'loading') {
@@ -45,7 +45,7 @@ export default function HomePage() {
 
           <select id="city" value={selected} onChange={(e) => setSelected(e.target.value)}>
             {cities.map((city) => (
-              <option key={city.id} value={city.id}>{city.name}</option>
+              <option key={city._id} value={city.name}>{city.name}</option>
             ))}
          </select>
         

@@ -18,6 +18,7 @@ module.exports = (db) => {
         }
         await users.insertOne({username,email,city,bookmarks: [],isAdmin: false,password: await bcrypt.hash(password, 10)});
         await db.collection('cities').updateOne({ name: city }, { $setOnInsert: { name: city, spots: [] } }, { upsert: true });
+        require('./spots').seedCity(db, city).catch(err => console.error(`Seeding ${city} failed:`, err.message));
         res.status(201).json({ message: 'Account created.' });
     });
 

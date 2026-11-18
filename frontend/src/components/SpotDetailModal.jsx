@@ -1,10 +1,11 @@
 import { useEffect, useRef, useState } from 'react' 
 import { Link, useNavigate, useParams } from 'react-router'
-import { getSpot, NotFoundError } from '../api/spots'
+import { getSpot } from '../api/API'
 import { categoryLabel } from '../utils/categories'
 
 export default function SpotDetailModal(){
-    const { cityId, spotId } = useParams()
+    const { city, spotId } = useParams()
+    const cityPath = `/cities/${encodeURIComponent(city)}`
     const navigate = useNavigate()
     const dialogRef = useRef(null)
     const [spot, setSpot] = useState(null)
@@ -29,12 +30,12 @@ export default function SpotDetailModal(){
     })
     .catch((error) => {
         console.error('Failed to load spot: ', error)
-        if(!ignore) setStatus(error instanceof NotFoundError ? 'notfound' : 'error')
+        if(!ignore) setStatus(error.response?.status === 404 ? 'notfound' : 'error')
     })
     return () => { ignore = true }}, [spotId, reloadKey])
 
     function close(){
-        navigate(`/cities/${cityId}`)
+        navigate(cityPath)
     }
 
     function retry(){
@@ -58,7 +59,7 @@ export default function SpotDetailModal(){
                     <div className="status">
                         <h2>Spot not found</h2>
                         <p>Sorry, we couldn't find the spot you were looking for.</p>
-                        <Link to={`/cities/${cityId}`}>Back to spots</Link>
+                        <Link to={cityPath}>Back to spots</Link>
                     </div>
                 )}
 
@@ -71,12 +72,12 @@ export default function SpotDetailModal(){
 
                 {status === 'ready' && (
                     <article>
-                        {spot.photoUrl && (
-                            <img src={spot.photoUrl} alt={spot.name} className="modal-photo" />
+                        {spot.banner && (
+                            <img src={spot.banner} alt={spot.title} className="modal-photo" />
 
                         )}
                         <span className="badge">{categoryLabel(spot.category)}</span>
-                        <h2>{spot.name}</h2>
+                        <h2>{spot.title}</h2>
                         <p>{spot.description}</p>
 
                         <dl className="spot-facts">
