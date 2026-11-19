@@ -96,7 +96,8 @@ module.exports = (db) => {
         }
         const spots = await db.collection('spots').find({city}).toArray();
 
-        const rankedSpots = await fetch("http://127.0.0.1:8000/rank", {
+        const aiUrl = process.env.AI_URL || "http://127.0.0.1:8000";
+        const rankedSpots = await fetch(`${aiUrl}/rank`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
