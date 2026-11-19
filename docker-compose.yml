@@ -17,15 +17,33 @@ services:
     volumes:
       - ollama-data:/root/.ollama
 
-  # backend: add once Christian pushes backend code
-  # backend:
-  #   build: ./backend
-  #   env_file: .env
-  #   ports:
-  #     - "4000:4000"
-  #   depends_on:
-  #     mongo:
-  #       condition: service_healthy
+  ai:
+    build: ./ai
+    ports: 
+      - "8000:8000"
+    volumes:
+      #Word2Vec model (~1.7GB) downloaded on first step and kept here. 
+      - ai-models:/app/models
+    healthcheck:
+      test: ["CMD", "python", "-c","import socket; socket.create_connection(('localhost', 8000))"]
+      interval: 10s
+      retries: 10
+      start_period: 20m
+
+
+  backend:
+    build: ./backend
+    env_file: .env
+    environment:
+      - MONGODB_URI=mongodb://mongo:27017
+      - AI_URL=http://ai:8000
+    ports:
+      - "4000:4000"
+    depends_on:
+      mongo:
+        condition: service_healthy
+      ai:
+        condition: service_healthy
 
   frontend:
     build: ./frontend
@@ -37,3 +55,4 @@ services:
 volumes:
   mongo-data:
   ollama-data:
+  ai-models:
