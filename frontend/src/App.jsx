@@ -6,6 +6,7 @@ import SpotDetailModal from './components/SpotDetailModal'
 import NotFoundPage from './pages/NotFoundPage'
 import LoginPage from './pages/LoginPage'
 import RegisterPage from './pages/RegisterPage'
+import SubmitSpotPage from './pages/SubmitSpotPage'
 import { getMe, logout } from './api/API'
 
 
@@ -32,11 +33,13 @@ export default function App() {
           <NavLink to="/" end className="nav-link">Home</NavLink>
          {user ? (
           <>
+            <NavLink to="/submit" className="nav-link">Submit a spot</NavLink>
             <span className="nav-link">Signed in as {user.username}</span> 
             <button type="button" onClick={handleSignOut}>Sign out</button>
           </>
          ) : (
           <>
+            
             <NavLink to="/login" className="nav-link">Sign in</NavLink>
             <NavLink to="/register" className="nav-link">Create account</NavLink>
           </>
@@ -50,6 +53,7 @@ export default function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<LoginPage setUser={setUser} />} />
           <Route path="/register" element={<RegisterPage setUser={setUser} />} />
+          <Route path="/submit" element={<SubmitSpotPage user={user} />} />
           <Route path="/cities/:city" element={<SpotListPage />} >
             <Route path="spots/:spotId" element={<SpotDetailModal />} />
           </Route>

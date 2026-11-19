@@ -195,7 +195,18 @@ button:hover { background: var(--color-primary-dark); }
   margin-bottom: 0.5rem;
 }
 
+.form-error{
+  width:100%;
+  text-align: center;
+  margin: 0.5rem 0;
+}
 
+.form-success{
+  width: 100%; 
+  text-align: center;
+  color: #1a7f37;
+  margin: 0.5rem 0; 
+}
 
 /* ===== Spot grid and cards ===== */
 .spot-grid {
