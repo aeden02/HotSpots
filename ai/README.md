@@ -12,11 +12,10 @@ python -m venv .venv
 .venv\Scripts\Activate.ps1
 python -m pip install -r requirements.txt
 python -m unittest -v
-python experiment.py search "finish homework over a cup of coffee"
 python experiment.py run
 ```
 
-The first search or evaluation downloads `word2vec-google-news-300` through Gensim.
+The first evaluation downloads `word2vec-google-news-300` through Gensim.
 The download is about **1.7 GB**, with several GB of RAM needed when loaded.
 It is cached in `models/` (ignored by Git); later runs reuse it but still need time
 and memory to load it. If `GENSIM_DATA_DIR` is already set, that directory is used.
@@ -24,7 +23,6 @@ and memory to load it. If `GENSIM_DATA_DIR` is already set, that directory is us
 If you already have a pretrained Word2Vec binary, skip the download:
 
 ```powershell
-python experiment.py search "rent a kayak" --vectors models/GoogleNews-vectors-negative300.bin.gz
 python experiment.py run --vectors models/GoogleNews-vectors-negative300.bin.gz
 ```
 

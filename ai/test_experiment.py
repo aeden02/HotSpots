@@ -55,7 +55,7 @@ class ExperimentTests(unittest.TestCase):
         self.assertEqual(result['reciprocal_rank'], 0.5)
         self.assertEqual(rows[1]['top3'], [])
 
-    def test_binary_loader_and_commands(self):
+    def test_binary_loader_evaluation_and_search(self):
         with tempfile.TemporaryDirectory() as directory:
             directory = Path(directory)
             binary = directory / 'tiny.bin'
@@ -63,19 +63,16 @@ class ExperimentTests(unittest.TestCase):
             loaded = load_word_vectors(binary)
             np.testing.assert_array_equal(loaded['coffee'], [0, 1])
             output = directory / 'results'
-            args = Namespace(data=ROOT / 'data', vectors=binary, output=output, query='coffee')
-            with contextlib.redirect_stdout(io.StringIO()) as stream:
+            args = Namespace(data=ROOT / 'data', vectors=binary, output=output)
+            with contextlib.redirect_stdout(io.StringIO()):
                 run(args)
-                search(args)
-            self.assertIn('Cafe', stream.getvalue())
             report = json.loads((output / 'metrics.json').read_text())
             self.assertEqual(report['test_queries'], 24)
             self.assertEqual(report['vector_size'], 2)
             self.assertTrue((output / 'rankings.csv').is_file())
-            args.query = 'zzzzzz'
-            with contextlib.redirect_stdout(io.StringIO()) as stream:
-                search(args)
-            self.assertIn('No recognized search words', stream.getvalue())
+            profiles = ['quiet', 'cafe', 'spaceship']
+            self.assertEqual(search('coffee', profiles, loaded), [(1, 1.0), (0, 0.0)])
+            self.assertEqual(search('zzzzzz', profiles, loaded), [])
 
     @patch.dict(os.environ, {'GENSIM_DATA_DIR': str(ROOT / 'models')})
     def test_default_model_loader(self):
