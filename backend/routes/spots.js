@@ -52,5 +52,32 @@ module.exports = (db) => {
         res.json(city);
     });
 
+    router.get('/searchSpots', async (req,res) => {
+        const { query, city } = req.query;
+
+        if (!query || !city){
+            return res.status(400).json({ error: 'Query and city are required.' });
+        }
+        const spots = await db.collection('spots').find({city}).toArray();
+
+        const rankedSpots = await fetch("http://127.0.0.1:8000/rank", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ query, spots: spots.map(({ id, title, description }) => ({ id, title, description })) })
+        });
+
+        if (!rankedSpots.ok) {
+            return res.status(500).json({ error: 'Failed to rank spots.' });
+        }
+
+        const {matches} = await rankedSpots.json();
+        const spotsById = new Map(spots.map(spot => [spot.id, spot]));
+
+        res.json(matches.map( ({id,score}) => ({...spotsById.get(id), score}) ));
+    });
+
+
     return router;
 };

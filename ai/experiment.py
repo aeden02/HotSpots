@@ -174,23 +174,16 @@ def run(args):
     print(json.dumps(report, indent=2))
 
 
-def search(args):
-    """Print the three closest spots for a search."""
-    # Search needs only the spot catalog, not the evaluation query fixtures.
-    with (args.data / 'spots.csv').open(encoding='utf-8', newline='') as file:
-        spots = list(csv.DictReader(file))
-    word_vectors = load_word_vectors(args.vectors)
-    documents = np.array([encode(text, word_vectors) for text in spot_texts(spots)])
-    scores = score_query(args.query, word_vectors, documents)
-    if not np.isfinite(scores).any():
-        print('No recognized search words or searchable spots. Try another search.')
-        return
+def search(query, spot_profiles, word_vectors):
+    """Return ranked (spot index, score) pairs for the supplied profiles."""
+    if not spot_profiles:
+        return []
 
+    documents = np.array([encode(text, word_vectors) for text in spot_profiles])
+    scores = score_query(query, word_vectors, documents)
     ranking = np.argsort(-scores, kind='stable')
-    matches = [index for index in ranking if np.isfinite(scores[index])][:3]
-    for index in matches:
-        spot = spots[index]
-        print(f"{scores[index]:.3f}  {spot['name']}: {spot['description']}")
+
+    return [(int(index), float(scores[index])) for index in ranking if np.isfinite(scores[index])]
 
 
 def main():
@@ -198,16 +191,9 @@ def main():
     commands = parser.add_subparsers(dest='command', required=True)
     run_parser = commands.add_parser('run', help='Compare Word2Vec with keyword search')
     run_parser.add_argument('--output', type=Path, default=ROOT / 'results-word2vec')
-    search_parser = commands.add_parser('search', help='Search the spot catalog')
-    search_parser.add_argument('query')
-    for command in [run_parser, search_parser]:
-        command.add_argument('--data', type=Path, default=ROOT / 'data')
-        command.add_argument('--vectors', type=Path, help='Optional Word2Vec binary (.bin or .bin.gz)')
-    args = parser.parse_args()
-    if args.command == 'run':
-        run(args)
-    else:
-        search(args)
+    run_parser.add_argument('--data', type=Path, default=ROOT / 'data')
+    run_parser.add_argument('--vectors', type=Path, help='Optional Word2Vec binary (.bin or .bin.gz)')
+    run(parser.parse_args())
 
 
 if __name__ == '__main__':
