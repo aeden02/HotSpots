@@ -10,13 +10,17 @@ module.exports = (db) => {
         if (![username, email, password, city].every(v => typeof v === 'string' && v.trim())) {
             return res.status(400).json({ error: 'Username, email, password, and city are required.' });
         }
+        // Basic format check: something@something.tld, no spaces.
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            return res.status(401).json({ error: 'Invalid email' });
+        }
         const users = db.collection('users');
         const existing = await users.findOne({ $or: [{ username }, { email }] });
         if (existing) {
             const field = existing.username === username ? 'Username' : 'Email';
             return res.status(409).json({ error: `${field} is already taken.` });
         }
-        await users.insertOne({username,email,city,bookmarks: [],isAdmin: false,password: await bcrypt.hash(password, 10)});
+        await users.insertOne({username,email,city,bookmarks: [],recentlyViewed: [],isAdmin: false,password: await bcrypt.hash(password, 10)});
         await db.collection('cities').updateOne({ name: city }, { $setOnInsert: { name: city, spots: [] } }, { upsert: true });
         require('./spots').seedCity(db, city).catch(err => console.error(`Seeding ${city} failed:`, err.message));
         res.status(201).json({ message: 'Account created.' });

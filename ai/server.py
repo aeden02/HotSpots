@@ -1,4 +1,5 @@
 import json
+import os
 from http.server import BaseHTTPRequestHandler, HTTPServer
 
 from experiment import load_word_vectors, search
@@ -40,7 +41,8 @@ class RankHandler(BaseHTTPRequestHandler):
 
 
 if __name__ == "__main__":
+    host = os.environ.get("HOST", "127.0.0.1")
     RankHandler.word_vectors = load_word_vectors()
-    with HTTPServer(("127.0.0.1", 8000), RankHandler) as server:
-        print("Rank endpoint listening on http://127.0.0.1:8000/rank")
+    with HTTPServer((host, 8000), RankHandler) as server:
+        print(f"Rank endpoint listening on http://{host}:8000/rank")
         server.serve_forever()

@@ -17,15 +17,39 @@ services:
     volumes:
       - ollama-data:/root/.ollama
 
-  # backend: add once Christian pushes backend code
-  # backend:
-  #   build: ./backend
-  #   env_file: .env
-  #   ports:
-  #     - "4000:4000"
-  #   depends_on:
-  #     mongo:
-  #       condition: service_healthy
+  ai:
+    build: ./ai
+    ports:
+      - "8000:8000"
+    volumes:
+      # Word2Vec model (~1.7 GB) is downloaded on first start and kept here.
+      - ai-models:/app/models
+    healthcheck:
+      test: ["CMD", "python", "-c", "import socket; socket.create_connection(('localhost', 8000))"]
+      interval: 10s
+      retries: 10
+      start_period: 20m
+
+  backend:
+    build: ./backend
+    # .env is optional so `docker compose` works on a fresh clone and in CI.
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      - MONGODB_URI=mongodb://mongo:27017
+      - AI_URL=http://ai:8000
+      # Override in .env for anything other than local development.
+      - SESSION_SECRET=${SESSION_SECRET:-dev-only-session-secret}
+    ports:
+      - "4000:4000"
+    depends_on:
+      mongo:
+        condition: service_healthy
+      # Don't wait for the AI model download (can take many minutes on first run);
+      # AI search returns 503 until the ranker is ready, everything else works.
+      ai:
+        condition: service_started
 
   frontend:
     build: ./frontend
@@ -33,7 +57,10 @@ services:
       - API_URL=http://backend:4000
     ports:
       - "5173:5173"
+    depends_on:
+      - backend
 
 volumes:
   mongo-data:
   ollama-data:
+  ai-models:
