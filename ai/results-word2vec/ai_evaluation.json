@@ -1,0 +1,935 @@
+{
+  "model": "word2vec-google-news-300",
+  "summary": {
+    "search": {
+      "ai": {
+        "hit_at_1": 1,
+        "recall_at_5": 0.8958333333333334
+      },
+      "keyword": {
+        "hit_at_1": 0.9583333333333334,
+        "recall_at_5": 0.7291666666666666
+      },
+      "cases": 24
+    },
+    "tags": {
+      "ai": {
+        "precision": 0.6111111111111112,
+        "recall": 0.88,
+        "micro_f1": 0.7213114754098361
+      },
+      "keyword": {
+        "precision": 0.6428571428571429,
+        "recall": 0.36,
+        "micro_f1": 0.46153846153846156
+      },
+      "cases": 20
+    },
+    "similar": {
+      "ai": {
+        "hit_at_1": 0.8,
+        "recall_at_5": 0.8666666666666667
+      },
+      "keyword": {
+        "hit_at_1": 1,
+        "recall_at_5": 0.8666666666666667
+      },
+      "cases": 5
+    },
+    "member": {
+      "ai": {
+        "hit_at_1": 1,
+        "recall_at_5": 0.9333333333333333
+      },
+      "keyword": {
+        "hit_at_1": 1,
+        "recall_at_5": 0.9333333333333333
+      },
+      "cases": 5
+    }
+  },
+  "cases": [
+    {
+      "task": "search",
+      "case": "finish homework over a cup of coffee",
+      "expected": [
+        "study1",
+        "study2"
+      ],
+      "ai": [
+        "study1",
+        "study2",
+        "music1",
+        "rain2"
+      ],
+      "keyword": [
+        "study2",
+        "music1",
+        "study1"
+      ]
+    },
+    {
+      "task": "search",
+      "case": "a peaceful desk where I can focus",
+      "expected": [
+        "study1",
+        "study2"
+      ],
+      "ai": [
+        "study2"
+      ],
+      "keyword": []
+    },
+    {
+      "task": "search",
+      "case": "watch a band while drinking coffee",
+      "expected": [
+        "music1",
+        "music2"
+      ],
+      "ai": [
+        "music1",
+        "study1",
+        "music2",
+        "rain2",
+        "playground2"
+      ],
+      "keyword": [
+        "music1",
+        "study1"
+      ]
+    },
+    {
+      "task": "search",
+      "case": "an evening of dancing and songs",
+      "expected": [
+        "music1",
+        "music2"
+      ],
+      "ai": [
+        "music2",
+        "music1"
+      ],
+      "keyword": [
+        "music2",
+        "music1"
+      ]
+    },
+    {
+      "task": "search",
+      "case": "let the kids burn off energy on slides",
+      "expected": [
+        "playground1",
+        "playground2"
+      ],
+      "ai": [
+        "playground1",
+        "playground2"
+      ],
+      "keyword": [
+        "playground2",
+        "playground1"
+      ]
+    },
+    {
+      "task": "search",
+      "case": "eat outdoors while children use climbing equipment",
+      "expected": [
+        "playground1",
+        "playground2"
+      ],
+      "ai": [
+        "playground2",
+        "playground1",
+        "rain1",
+        "study2",
+        "rain2"
+      ],
+      "keyword": [
+        "playground2",
+        "playground1"
+      ]
+    },
+    {
+      "task": "search",
+      "case": "spend the afternoon trekking through forest",
+      "expected": [
+        "hiking1",
+        "hiking2"
+      ],
+      "ai": [
+        "hiking2",
+        "hiking1",
+        "rain1"
+      ],
+      "keyword": [
+        "hiking2",
+        "hiking1"
+      ]
+    },
+    {
+      "task": "search",
+      "case": "exercise on a steep path surrounded by trees",
+      "expected": [
+        "hiking1",
+        "hiking2"
+      ],
+      "ai": [
+        "hiking2",
+        "hiking1",
+        "playground1",
+        "playground2"
+      ],
+      "keyword": [
+        "hiking2",
+        "hiking1",
+        "art1",
+        "crafts1"
+      ]
+    },
+    {
+      "task": "search",
+      "case": "explore the city past through artifacts",
+      "expected": [
+        "history1",
+        "history2"
+      ],
+      "ai": [
+        "history2",
+        "history1",
+        "antiques2"
+      ],
+      "keyword": [
+        "history2",
+        "hiking2",
+        "history1",
+        "antiques2"
+      ]
+    },
+    {
+      "task": "search",
+      "case": "learn about settlers and the old town",
+      "expected": [
+        "history1",
+        "history2"
+      ],
+      "ai": [
+        "history1",
+        "history2"
+      ],
+      "keyword": [
+        "history1",
+        "history2",
+        "antiques1"
+      ]
+    },
+    {
+      "task": "search",
+      "case": "browse colorful artwork and pottery",
+      "expected": [
+        "art1",
+        "art2"
+      ],
+      "ai": [
+        "art2",
+        "art1",
+        "antiques1",
+        "crafts2",
+        "history2"
+      ],
+      "keyword": [
+        "art2"
+      ]
+    },
+    {
+      "task": "search",
+      "case": "see creative drawings in a gallery",
+      "expected": [
+        "art1",
+        "art2"
+      ],
+      "ai": [
+        "art1",
+        "art2",
+        "history2"
+      ],
+      "keyword": [
+        "art1",
+        "art2"
+      ]
+    },
+    {
+      "task": "search",
+      "case": "hunt for secondhand treasures and ornaments",
+      "expected": [
+        "antiques1",
+        "antiques2"
+      ],
+      "ai": [
+        "antiques1",
+        "antiques2",
+        "crafts2",
+        "crafts1",
+        "history2"
+      ],
+      "keyword": [
+        "antiques1",
+        "antiques2"
+      ]
+    },
+    {
+      "task": "search",
+      "case": "buy a retro chair for my home",
+      "expected": [
+        "antiques1",
+        "antiques2"
+      ],
+      "ai": [
+        "antiques1",
+        "antiques2"
+      ],
+      "keyword": [
+        "antiques2"
+      ]
+    },
+    {
+      "task": "search",
+      "case": "take home something made by a local maker",
+      "expected": [
+        "crafts1",
+        "crafts2"
+      ],
+      "ai": [
+        "crafts1"
+      ],
+      "keyword": [
+        "crafts1",
+        "art1",
+        "music2",
+        "history2"
+      ]
+    },
+    {
+      "task": "search",
+      "case": "purchase handmade jewelry as a present",
+      "expected": [
+        "crafts1",
+        "crafts2"
+      ],
+      "ai": [
+        "crafts2",
+        "crafts1",
+        "antiques1",
+        "antiques2",
+        "art2"
+      ],
+      "keyword": [
+        "crafts1"
+      ]
+    },
+    {
+      "task": "search",
+      "case": "grab a filling meal for little money",
+      "expected": [
+        "budgetfood1",
+        "budgetfood2"
+      ],
+      "ai": [
+        "budgetfood1",
+        "budgetfood2"
+      ],
+      "keyword": [
+        "budgetfood1"
+      ]
+    },
+    {
+      "task": "search",
+      "case": "save money on tacos or noodles",
+      "expected": [
+        "budgetfood1",
+        "budgetfood2"
+      ],
+      "ai": [
+        "budgetfood1",
+        "budgetfood2"
+      ],
+      "keyword": [
+        "budgetfood2",
+        "budgetfood1"
+      ]
+    },
+    {
+      "task": "search",
+      "case": "sit under the sky while eating",
+      "expected": [
+        "patio1",
+        "patio2"
+      ],
+      "ai": [
+        "patio2"
+      ],
+      "keyword": [
+        "patio2"
+      ]
+    },
+    {
+      "task": "search",
+      "case": "have a meal outside in a courtyard",
+      "expected": [
+        "patio1",
+        "patio2"
+      ],
+      "ai": [
+        "patio1",
+        "patio2",
+        "playground2",
+        "music1",
+        "budgetfood2"
+      ],
+      "keyword": [
+        "patio1"
+      ]
+    },
+    {
+      "task": "search",
+      "case": "stay dry while solving a group challenge",
+      "expected": [
+        "rain1",
+        "rain2"
+      ],
+      "ai": [
+        "rain1"
+      ],
+      "keyword": [
+        "rain2"
+      ]
+    },
+    {
+      "task": "search",
+      "case": "friends want tabletop entertainment when it rains",
+      "expected": [
+        "rain1",
+        "rain2"
+      ],
+      "ai": [
+        "rain2",
+        "playground2",
+        "playground1",
+        "music1",
+        "music2"
+      ],
+      "keyword": [
+        "rain2"
+      ]
+    },
+    {
+      "task": "search",
+      "case": "spend time on the water in a small boat",
+      "expected": [
+        "water1",
+        "water2"
+      ],
+      "ai": [
+        "water2",
+        "water1",
+        "rain1",
+        "playground2"
+      ],
+      "keyword": [
+        "water2",
+        "crafts2"
+      ]
+    },
+    {
+      "task": "search",
+      "case": "hire paddling equipment by the lake",
+      "expected": [
+        "water1",
+        "water2"
+      ],
+      "ai": [
+        "water2",
+        "water1",
+        "playground2",
+        "hiking1",
+        "playground1"
+      ],
+      "keyword": [
+        "water2",
+        "water1",
+        "playground2",
+        "art1",
+        "crafts1"
+      ]
+    },
+    {
+      "task": "tags",
+      "case": "victory-circle-park-dpr18g",
+      "expected": [
+        "outdoors"
+      ],
+      "ai": [
+        "outdoors",
+        "family-activities"
+      ],
+      "keyword": [
+        "outdoors"
+      ]
+    },
+    {
+      "task": "tags",
+      "case": "sonic-tz3uti",
+      "expected": [
+        "food-and-drink"
+      ],
+      "ai": [
+        "food-and-drink"
+      ],
+      "keyword": []
+    },
+    {
+      "task": "tags",
+      "case": "fort-smith-little-theatre-ntquke",
+      "expected": [
+        "arts-and-culture",
+        "entertainment"
+      ],
+      "ai": [
+        "arts-and-culture",
+        "family-activities",
+        "outdoors"
+      ],
+      "keyword": [
+        "arts-and-culture"
+      ]
+    },
+    {
+      "task": "tags",
+      "case": "starbucks-pxdu7i",
+      "expected": [
+        "food-and-drink"
+      ],
+      "ai": [
+        "food-and-drink",
+        "nightlife"
+      ],
+      "keyword": []
+    },
+    {
+      "task": "tags",
+      "case": "kpot-gk3tfn",
+      "expected": [
+        "food-and-drink"
+      ],
+      "ai": [
+        "food-and-drink",
+        "nightlife"
+      ],
+      "keyword": [
+        "food-and-drink"
+      ]
+    },
+    {
+      "task": "tags",
+      "case": "kelley-park-ballfields-5bh9ni",
+      "expected": [
+        "outdoors",
+        "sports-and-fitness"
+      ],
+      "ai": [
+        "outdoors",
+        "family-activities",
+        "sports-and-fitness"
+      ],
+      "keyword": [
+        "outdoors"
+      ]
+    },
+    {
+      "task": "tags",
+      "case": "asian-bistro-i8f6ko",
+      "expected": [
+        "food-and-drink"
+      ],
+      "ai": [
+        "food-and-drink",
+        "nightlife"
+      ],
+      "keyword": []
+    },
+    {
+      "task": "tags",
+      "case": "raising-cane-s-hsp3d8",
+      "expected": [
+        "food-and-drink"
+      ],
+      "ai": [
+        "food-and-drink"
+      ],
+      "keyword": [
+        "outdoors",
+        "family-activities"
+      ]
+    },
+    {
+      "task": "tags",
+      "case": "atlas-uniforms-vqc8h8",
+      "expected": [
+        "shopping"
+      ],
+      "ai": [
+        "shopping"
+      ],
+      "keyword": []
+    },
+    {
+      "task": "tags",
+      "case": "tgi-fridays-dyqrlx",
+      "expected": [
+        "food-and-drink"
+      ],
+      "ai": [
+        "food-and-drink",
+        "nightlife"
+      ],
+      "keyword": []
+    },
+    {
+      "task": "tags",
+      "case": "bowling-world-48f087",
+      "expected": [
+        "entertainment",
+        "sports-and-fitness"
+      ],
+      "ai": [
+        "entertainment",
+        "family-activities",
+        "sports-and-fitness"
+      ],
+      "keyword": [
+        "entertainment"
+      ]
+    },
+    {
+      "task": "tags",
+      "case": "la-nueva-micho-cana-9oqkp4",
+      "expected": [
+        "food-and-drink"
+      ],
+      "ai": [],
+      "keyword": []
+    },
+    {
+      "task": "tags",
+      "case": "the-arcade-kdvjlw",
+      "expected": [
+        "entertainment"
+      ],
+      "ai": [
+        "entertainment"
+      ],
+      "keyword": [
+        "entertainment"
+      ]
+    },
+    {
+      "task": "tags",
+      "case": "bookish-wj0spm",
+      "expected": [
+        "shopping"
+      ],
+      "ai": [
+        "shopping",
+        "arts-and-culture"
+      ],
+      "keyword": [
+        "shopping"
+      ]
+    },
+    {
+      "task": "tags",
+      "case": "sharp-gaming-ufrpod",
+      "expected": [
+        "shopping",
+        "entertainment"
+      ],
+      "ai": [
+        "entertainment",
+        "shopping",
+        "arts-and-culture"
+      ],
+      "keyword": []
+    },
+    {
+      "task": "tags",
+      "case": "western-sizzlin-t3led4",
+      "expected": [
+        "food-and-drink"
+      ],
+      "ai": [
+        "food-and-drink"
+      ],
+      "keyword": []
+    },
+    {
+      "task": "tags",
+      "case": "freddy-s-23dzti",
+      "expected": [
+        "food-and-drink"
+      ],
+      "ai": [
+        "food-and-drink"
+      ],
+      "keyword": [
+        "family-activities"
+      ]
+    },
+    {
+      "task": "tags",
+      "case": "south-28th-boutique-kar1pg",
+      "expected": [
+        "shopping"
+      ],
+      "ai": [
+        "shopping"
+      ],
+      "keyword": [
+        "shopping"
+      ]
+    },
+    {
+      "task": "tags",
+      "case": "jerry-neel-s-bar-b-que-catering-l9xa26",
+      "expected": [
+        "food-and-drink"
+      ],
+      "ai": [
+        "food-and-drink",
+        "nightlife"
+      ],
+      "keyword": [
+        "family-activities"
+      ]
+    },
+    {
+      "task": "tags",
+      "case": "miss-laura-s-brothel-museum-6026o8",
+      "expected": [
+        "history",
+        "education"
+      ],
+      "ai": [
+        "history",
+        "arts-and-culture",
+        "family-activities"
+      ],
+      "keyword": [
+        "history",
+        "family-activities"
+      ]
+    },
+    {
+      "task": "similar",
+      "case": "The Arcade Indoor retro arcade with classic video games and pinball machines.",
+      "expected": [
+        "bowling-world-48f087",
+        "sharp-gaming-ufrpod"
+      ],
+      "ai": [
+        "bowling-world-48f087",
+        "sharp-gaming-ufrpod"
+      ],
+      "keyword": [
+        "bowling-world-48f087",
+        "western-sizzlin-t3led4",
+        "tgi-fridays-dyqrlx",
+        "sharp-gaming-ufrpod"
+      ]
+    },
+    {
+      "task": "similar",
+      "case": "Kelley Park Ballfields Outdoor ballfields used for youth baseball and softball in Fort Smith. Hours: Mo-Su 06:00-23:00.",
+      "expected": [
+        "victory-circle-park-dpr18g",
+        "bowling-world-48f087"
+      ],
+      "ai": [
+        "victory-circle-park-dpr18g",
+        "fort-smith-little-theatre-ntquke",
+        "bowling-world-48f087",
+        "miss-laura-s-brothel-museum-6026o8",
+        "bookish-wj0spm"
+      ],
+      "keyword": [
+        "victory-circle-park-dpr18g",
+        "fort-smith-little-theatre-ntquke",
+        "bowling-world-48f087",
+        "bookish-wj0spm",
+        "sonic-tz3uti"
+      ]
+    },
+    {
+      "task": "similar",
+      "case": "Sonic Fast-food drive-in serving burgers and other quick meals. Hours: Mo-Th 06:00-22:30; Fr 06:00-24:00; Sa 07:00-24:00; Su 07:00-22:30.",
+      "expected": [
+        "freddy-s-23dzti",
+        "raising-cane-s-hsp3d8",
+        "tgi-fridays-dyqrlx"
+      ],
+      "ai": [
+        "raising-cane-s-hsp3d8",
+        "freddy-s-23dzti",
+        "tgi-fridays-dyqrlx",
+        "western-sizzlin-t3led4",
+        "asian-bistro-i8f6ko"
+      ],
+      "keyword": [
+        "raising-cane-s-hsp3d8",
+        "tgi-fridays-dyqrlx",
+        "starbucks-pxdu7i",
+        "western-sizzlin-t3led4",
+        "freddy-s-23dzti"
+      ]
+    },
+    {
+      "task": "similar",
+      "case": "South 28th Boutique Clothing boutique selling business apparel and casual graphic tops.",
+      "expected": [
+        "atlas-uniforms-vqc8h8"
+      ],
+      "ai": [
+        "atlas-uniforms-vqc8h8",
+        "sharp-gaming-ufrpod",
+        "bookish-wj0spm"
+      ],
+      "keyword": [
+        "atlas-uniforms-vqc8h8",
+        "tgi-fridays-dyqrlx",
+        "bookish-wj0spm",
+        "sharp-gaming-ufrpod",
+        "sonic-tz3uti"
+      ]
+    },
+    {
+      "task": "similar",
+      "case": "Western Sizzlin' American steakhouse serving steak and other classic American meals.",
+      "expected": [
+        "tgi-fridays-dyqrlx",
+        "jerry-neel-s-bar-b-que-catering-l9xa26",
+        "kpot-gk3tfn"
+      ],
+      "ai": [
+        "freddy-s-23dzti",
+        "raising-cane-s-hsp3d8",
+        "sonic-tz3uti",
+        "tgi-fridays-dyqrlx",
+        "asian-bistro-i8f6ko"
+      ],
+      "keyword": [
+        "tgi-fridays-dyqrlx",
+        "sonic-tz3uti",
+        "raising-cane-s-hsp3d8",
+        "asian-bistro-i8f6ko",
+        "freddy-s-23dzti"
+      ]
+    },
+    {
+      "task": "member",
+      "case": "outdoors",
+      "expected": [
+        "victory-circle-park-dpr18g",
+        "kelley-park-ballfields-5bh9ni"
+      ],
+      "ai": [
+        "victory-circle-park-dpr18g",
+        "kelley-park-ballfields-5bh9ni",
+        "fort-smith-little-theatre-ntquke"
+      ],
+      "keyword": [
+        "victory-circle-park-dpr18g",
+        "kelley-park-ballfields-5bh9ni",
+        "fort-smith-little-theatre-ntquke"
+      ]
+    },
+    {
+      "task": "member",
+      "case": "shopping",
+      "expected": [
+        "atlas-uniforms-vqc8h8",
+        "south-28th-boutique-kar1pg",
+        "bookish-wj0spm",
+        "sharp-gaming-ufrpod"
+      ],
+      "ai": [
+        "south-28th-boutique-kar1pg",
+        "atlas-uniforms-vqc8h8",
+        "bookish-wj0spm",
+        "sharp-gaming-ufrpod"
+      ],
+      "keyword": [
+        "bookish-wj0spm",
+        "south-28th-boutique-kar1pg",
+        "atlas-uniforms-vqc8h8",
+        "sharp-gaming-ufrpod"
+      ]
+    },
+    {
+      "task": "member",
+      "case": "history education",
+      "expected": [
+        "miss-laura-s-brothel-museum-6026o8"
+      ],
+      "ai": [
+        "miss-laura-s-brothel-museum-6026o8"
+      ],
+      "keyword": [
+        "miss-laura-s-brothel-museum-6026o8"
+      ]
+    },
+    {
+      "task": "member",
+      "case": "entertainment Sharp Gaming Hobby and game shop selling trading cards, collectibles, and tabletop gaming supplies. The gaming lounge has tables for playing in person.",
+      "expected": [
+        "the-arcade-kdvjlw",
+        "bowling-world-48f087",
+        "fort-smith-little-theatre-ntquke"
+      ],
+      "ai": [
+        "the-arcade-kdvjlw",
+        "bowling-world-48f087",
+        "south-28th-boutique-kar1pg",
+        "bookish-wj0spm",
+        "atlas-uniforms-vqc8h8"
+      ],
+      "keyword": [
+        "bowling-world-48f087",
+        "bookish-wj0spm",
+        "the-arcade-kdvjlw",
+        "south-28th-boutique-kar1pg",
+        "atlas-uniforms-vqc8h8"
+      ]
+    },
+    {
+      "task": "member",
+      "case": "sports-and-fitness Victory Circle Park Neighborhood park on Victory Circle with benches for sitting outdoors and on-site parking. Hours: Mo-Su 06:00-23:00.",
+      "expected": [
+        "kelley-park-ballfields-5bh9ni",
+        "bowling-world-48f087"
+      ],
+      "ai": [
+        "kelley-park-ballfields-5bh9ni",
+        "bowling-world-48f087",
+        "fort-smith-little-theatre-ntquke",
+        "miss-laura-s-brothel-museum-6026o8",
+        "tgi-fridays-dyqrlx"
+      ],
+      "keyword": [
+        "kelley-park-ballfields-5bh9ni",
+        "bowling-world-48f087",
+        "fort-smith-little-theatre-ntquke",
+        "sonic-tz3uti",
+        "tgi-fridays-dyqrlx"
+      ]
+    }
+  ]
+}
