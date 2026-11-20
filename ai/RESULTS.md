@@ -1,4 +1,60 @@
-# Word2Vec feasibility results
+# HotSpots AI evaluation
+
+## Sprint 3 baseline comparison
+
+The production Python handlers for search, auto-tagging, and recommendations were
+evaluated through local HTTP requests with the cached Google News Word2Vec model.
+Run the comparison from the repository root with
+`ai/.venv/Scripts/python.exe ai/evaluate_ai.py` on Windows.
+The runner starts its own local server on an available port. Inputs come from the
+repository fixtures. Each case's expected and returned IDs or tags are saved in
+[ai_evaluation.json](results-word2vec/ai_evaluation.json).
+
+| Feature | Cases | Metric | AI | TF-IDF baseline |
+|---|---:|---|---:|---:|
+| City spot search | 24 | First result relevant | 100.0% | 95.8% |
+| City spot search | 24 | Recall@5 | 89.6% | 72.9% |
+| Auto-tagging | 20 | Micro precision | 61.1% | 64.3% |
+| Auto-tagging | 20 | Micro recall | 88.0% | 36.0% |
+| Auto-tagging | 20 | Micro F1 | 72.1% | 46.2% |
+| Similar spots | 5 | First result relevant | 80.0% | 100.0% |
+| Similar spots | 5 | Recall@5 | 86.7% | 86.7% |
+| Recommended for you | 5 | First result relevant | 100.0% | 100.0% |
+| Recommended for you | 5 | Recall@5 | 93.3% | 93.3% |
+
+**Method.** The text baseline uses the repository's TF-IDF implementation, returns
+positive cosine matches, and uses the same output limits as the API. Search uses
+the 24 existing test queries against 24 fictional spots, including the production
+weak-match cutoff on the AI side. For tagging, both methods compare the same 20
+Fort Smith records with the same 12 tag descriptions and can return up to three
+tags. For recommendations, both methods see the same titles, descriptions and
+generated tags. TF-IDF includes tags in its text representation. The AI uses its
+shared-tag bonus. Each scenario excludes its source or bookmarked spot before ranking.
+The five member scenarios cover three interests-only profiles and two profiles with
+a bookmark and interests.
+
+Recall@5 averages the fraction of labeled relevant spots found among the first
+five for each case. Tag precision counts the fraction of assigned tags judged
+correct, recall counts the fraction of expected tags recovered, and micro F1
+combines them across all spots.
+
+**Findings.** Semantic search retrieved 43 of 48 labeled matches in the top five,
+compared with 35 for TF-IDF. The tagger recovered 22 of 25 expected tags, but
+added 14 extras. For Starbucks it suggested both food-and-drink and nightlife,
+although only food-and-drink was labeled relevant. On the Western Sizzlin'
+similar-spot case the AI put Freddy's first and TGI Fridays fourth. TF-IDF put
+TGI Fridays first. The recommendation results provide no measured advantage for
+the AI on these ten scenarios.
+
+**Scope.** These are offline judgments authored for the experiment. Some Fort
+Smith spots had already been used to tune tag descriptions. The recommendation
+scenarios are small, and other spots may also be reasonable suggestions. This
+measures ranking and tag quality on the supplied cases. Event retrieval,
+keyword-fallback availability, popularity for new members, and feedback from
+real users require separate checks.
+[Fort Smith relevance labels](data/evaluation_labels.json)
+
+## Earlier Word2Vec feasibility results
 
 These results describe the current pretrained Word2Vec experiment, replacing the
 previous PyTorch report. The source measurements are in

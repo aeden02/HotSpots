@@ -1,0 +1,36 @@
+{
+  "tags": {
+    "victory-circle-park-dpr18g": ["outdoors"],
+    "sonic-tz3uti": ["food-and-drink"],
+    "fort-smith-little-theatre-ntquke": ["arts-and-culture", "entertainment"],
+    "starbucks-pxdu7i": ["food-and-drink"],
+    "kpot-gk3tfn": ["food-and-drink"],
+    "kelley-park-ballfields-5bh9ni": ["outdoors", "sports-and-fitness"],
+    "asian-bistro-i8f6ko": ["food-and-drink"],
+    "raising-cane-s-hsp3d8": ["food-and-drink"],
+    "atlas-uniforms-vqc8h8": ["shopping"],
+    "tgi-fridays-dyqrlx": ["food-and-drink"],
+    "bowling-world-48f087": ["entertainment", "sports-and-fitness"],
+    "la-nueva-micho-cana-9oqkp4": ["food-and-drink"],
+    "the-arcade-kdvjlw": ["entertainment"],
+    "bookish-wj0spm": ["shopping"],
+    "sharp-gaming-ufrpod": ["shopping", "entertainment"],
+    "western-sizzlin-t3led4": ["food-and-drink"],
+    "freddy-s-23dzti": ["food-and-drink"],
+    "south-28th-boutique-kar1pg": ["shopping"],
+    "jerry-neel-s-bar-b-que-catering-l9xa26": ["food-and-drink"],
+    "miss-laura-s-brothel-museum-6026o8": ["history", "education"]
+  },
+  "recommendations": [
+    {"mode":"similar", "seed":"the-arcade-kdvjlw", "relevant":["bowling-world-48f087","sharp-gaming-ufrpod"]},
+    {"mode":"similar", "seed":"kelley-park-ballfields-5bh9ni", "relevant":["victory-circle-park-dpr18g","bowling-world-48f087"]},
+    {"mode":"similar", "seed":"sonic-tz3uti", "relevant":["freddy-s-23dzti","raising-cane-s-hsp3d8","tgi-fridays-dyqrlx"]},
+    {"mode":"similar", "seed":"south-28th-boutique-kar1pg", "relevant":["atlas-uniforms-vqc8h8"]},
+    {"mode":"similar", "seed":"western-sizzlin-t3led4", "relevant":["tgi-fridays-dyqrlx","jerry-neel-s-bar-b-que-catering-l9xa26","kpot-gk3tfn"]},
+    {"mode":"member", "interests":["outdoors"], "relevant":["victory-circle-park-dpr18g","kelley-park-ballfields-5bh9ni"]},
+    {"mode":"member", "interests":["shopping"], "relevant":["atlas-uniforms-vqc8h8","south-28th-boutique-kar1pg","bookish-wj0spm","sharp-gaming-ufrpod"]},
+    {"mode":"member", "interests":["history","education"], "relevant":["miss-laura-s-brothel-museum-6026o8"]},
+    {"mode":"member", "seed":"sharp-gaming-ufrpod", "interests":["entertainment"], "relevant":["the-arcade-kdvjlw","bowling-world-48f087","fort-smith-little-theatre-ntquke"]},
+    {"mode":"member", "seed":"victory-circle-park-dpr18g", "interests":["sports-and-fitness"], "relevant":["kelley-park-ballfields-5bh9ni","bowling-world-48f087"]}
+  ]
+}
