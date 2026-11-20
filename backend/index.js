@@ -17,22 +17,26 @@ app.use(session({
 const client = new MongoClient(process.env.MONGODB_URI);
 const db = client.db('hotspots');
 
-const aiDirectory = path.resolve(__dirname, '../ai');
-const python = path.join(aiDirectory, '.venv', 'Scripts', 'python.exe');
-const ranker = spawn(python, ['-u', path.join(aiDirectory, 'server.py')], {
-    cwd: aiDirectory,
-    stdio: 'inherit',
-});
+// When AI_URL is set (e.g. in Docker Compose), the ranker runs in its own container.
+// Otherwise start it locally from ai/.venv.
+if (!process.env.AI_URL) {
+    const aiDirectory = path.resolve(__dirname, '../ai');
+    const python = path.join(aiDirectory, '.venv', 'Scripts', 'python.exe');
+    const ranker = spawn(python, ['-u', path.join(aiDirectory, 'server.py')], {
+        cwd: aiDirectory,
+        stdio: 'inherit',
+    });
 
-ranker.on('error', (error) => {
-    console.error('Could not start the Python ranker:', error.message);
-});
+    ranker.on('error', (error) => {
+        console.error('Could not start the Python ranker:', error.message);
+    });
 
-process.on('exit', () => {
-    if (ranker.pid && ranker.exitCode === null) {
-        ranker.kill();
-    }
-});
+    process.on('exit', () => {
+        if (ranker.pid && ranker.exitCode === null) {
+            ranker.kill();
+        }
+    });
+}
 
 
 async function connectToDatabase() {

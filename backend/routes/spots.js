@@ -53,6 +53,16 @@ module.exports = (db) => {
     router.get('/getSpot/:slug', async (req, res) => {
         const spot = await db.collection('spots').findOne({ id: req.params.slug });
         if (!spot) return res.status(404).json({ error: 'Spot not found.' });
+        if (req.session.userId) {
+            // Move this slug to the front of recentlyViewed (no duplicates) and keep only the 5 newest.
+            await db.collection('users').updateOne({ _id: new ObjectId(req.session.userId) }, [{
+                $set: {
+                    recentlyViewed: {
+                        $slice: [{ $concatArrays: [[spot.id], { $filter: { input: { $ifNull: ['$recentlyViewed', []] }, cond: { $ne: ['$$this', spot.id] } } }] }, 5]
+                    }
+                }
+            }]);
+        }
         res.json(spot);
     });
 
@@ -96,7 +106,8 @@ module.exports = (db) => {
         }
         const spots = await db.collection('spots').find({city}).toArray();
 
-        const rankedSpots = await fetch("http://127.0.0.1:8000/rank", {
+        const aiUrl = process.env.AI_URL || "http://127.0.0.1:8000";
+        const rankedSpots = await fetch(`${aiUrl}/rank`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
