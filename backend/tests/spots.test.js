@@ -180,6 +180,39 @@ describe('spots routes', () => {
         });
     });
 
+    describe('POST /spots/getSpotsByCategory', () => {
+        beforeEach(async () => {
+            await ctx.db.collection('spots').insertMany([
+                makeSpot({ id: 'diner', category: 'food' }),
+                makeSpot({ id: 'park', category: 'outdoors' }),
+                makeSpot({ id: 'tulsa-diner', category: 'food', city: 'Tulsa, OK' }),
+            ]);
+        });
+
+        test('returns spots in the city with that category', async () => {
+            const res = await request(ctx.app).post('/api/v1/spots/getSpotsByCategory').send({ category: 'food', city: CITY });
+            expect(res.status).toBe(200);
+            expect(res.body.map(s => s.id)).toEqual(['diner']);
+        });
+
+        test('returns an empty array when nothing matches', async () => {
+            const res = await request(ctx.app).post('/api/v1/spots/getSpotsByCategory').send({ category: 'shops', city: CITY });
+            expect(res.status).toBe(200);
+            expect(res.body).toEqual([]);
+        });
+
+        test.each([
+            ['no body', undefined],
+            ['missing category', { city: CITY }],
+            ['missing city', { category: 'food' }],
+            ['blank category', { category: ' ', city: CITY }],
+        ])('returns 400 for %s', async (_, body) => {
+            const res = await request(ctx.app).post('/api/v1/spots/getSpotsByCategory').send(body);
+            expect(res.status).toBe(400);
+            expect(res.body.error).toBe('Category and city are required.');
+        });
+    });
+
     describe('POST /spots/createSpot', () => {
         const body = { title: 'New Café', description: 'nice', banner: null, category: 'food', address: '2 Main St', tags: ['coffee'] };
 
