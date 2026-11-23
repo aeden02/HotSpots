@@ -69,6 +69,14 @@ button:hover { background: var(--color-primary-dark); }
   font-size: 1.4rem;
   text-decoration: none;
   padding: 0 0.75rem;
+  display: flex; 
+  align-items: center; 
+  gap: 0.5rem; 
+}
+
+.logo-img {
+  height: 2rem; 
+  width: auto;
 }
 
 .sidebar nav {

@@ -8,7 +8,7 @@ import LoginPage from './pages/LoginPage'
 import RegisterPage from './pages/RegisterPage'
 import SubmitSpotPage from './pages/SubmitSpotPage'
 import { getMe, logout } from './api/API'
-
+import logo from './assets/hotspots-mark-mono-white.svg'
 
 export default function App() {
   const [user, setUser] = useState(null) //null = no one signed in. 
@@ -28,7 +28,9 @@ export default function App() {
     <BrowserRouter>
      <div className="app-layout">
       <header className="sidebar">
-        <Link to="/" className="logo">HotSpots</Link>
+        <Link to="/" className="logo">
+          <img src={logo} alt="" className="logo-img" /> HotSpots</Link>
+
         <nav aria-label="Main">
           <NavLink to="/" end className="nav-link">Home</NavLink>
          {user ? (
