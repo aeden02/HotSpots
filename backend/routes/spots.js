@@ -12,15 +12,9 @@ function makeSlug(title) {
     return `${base}-${suffix}`;
 }
 
-// Fills an empty city with spots from OpenStreetMap. Returns null if the city doesn't exist
-// or already has spots (or is already being seeded), otherwise the inserted spot ids.
 async function seedCity(db, cityName) {
     const cities = db.collection('cities');
-    // Atomically claim the city so two concurrent calls can't both seed it.
-    const city = await cities.findOneAndUpdate(
-        { name: cityName, spots: { $size: 0 }, seeding: { $ne: true } },
-        { $set: { seeding: true } }
-    );
+    const city = await cities.findOneAndUpdate({ name: cityName, spots: { $size: 0 }, seeding: { $ne: true } },{ $set: { seeding: true } });
     if (!city) return null;
     try {
         const osmSpots = await getOsmSpots(city.name);
@@ -54,14 +48,7 @@ module.exports = (db) => {
         const spot = await db.collection('spots').findOne({ id: req.params.slug });
         if (!spot) return res.status(404).json({ error: 'Spot not found.' });
         if (req.session.userId) {
-            // Move this slug to the front of recentlyViewed (no duplicates) and keep only the 5 newest.
-            await db.collection('users').updateOne({ _id: new ObjectId(req.session.userId) }, [{
-                $set: {
-                    recentlyViewed: {
-                        $slice: [{ $concatArrays: [[spot.id], { $filter: { input: { $ifNull: ['$recentlyViewed', []] }, cond: { $ne: ['$$this', spot.id] } } }] }, 5]
-                    }
-                }
-            }]);
+            await db.collection('users').updateOne({ _id: new ObjectId(req.session.userId) }, [{$set: {recentlyViewed: {$slice: [{ $concatArrays: [[spot.id], { $filter: { input: { $ifNull: ['$recentlyViewed', []] }, cond: { $ne: ['$$this', spot.id] } } }] }, 5]}}}]);
         }
         res.json(spot);
     });
@@ -95,6 +82,40 @@ module.exports = (db) => {
         res.status(201).json({ message: 'Spot created.', id });
     });
 
+    router.patch('/updatePost', async (req, res) => {
+        if (!req.session.userId) return res.status(401).json({ error: 'Not logged in.' });
+        const body = req.body ?? {};
+        if (typeof body.slug !== 'string' || !body.slug.trim()) return res.status(400).json({ error: 'Spot slug is required.' });
+        const spot = await db.collection('spots').findOne({ id: body.slug });
+        if (!spot) return res.status(404).json({ error: 'Spot not found.' });
+        if (!spot.createdBy || spot.createdBy.toString() !== req.session.userId) return res.status(403).json({ error: 'You can only change spots you posted.' });
+        const updates = {};
+        for (const field of ['title', 'description', 'banner', 'category', 'address']) {
+            if (body[field] !== undefined) updates[field] = body[field];
+        }
+        if (body.tags !== undefined) {
+            if (!Array.isArray(body.tags)) return res.status(400).json({ error: 'Tags must be an array.' });
+            updates.tags = body.tags;
+        }
+        if ('title' in updates && (typeof updates.title !== 'string' || !updates.title.trim())) {
+            return res.status(400).json({ error: 'Title cannot be empty.' });
+        }
+        if (!Object.keys(updates).length) return res.status(400).json({ error: 'Nothing to update.' });
+        await db.collection('spots').updateOne({ _id: spot._id }, { $set: updates });
+        res.json({ message: 'Spot updated.', spot: { ...spot, ...updates } });
+    });
+
+    router.delete('/deletePost/:slug', async (req, res) => {
+        if (!req.session.userId) return res.status(401).json({ error: 'Not logged in.' });
+        const spot = await db.collection('spots').findOne({ id: req.params.slug });
+        if (!spot) return res.status(404).json({ error: 'Spot not found.' });
+        if (!spot.createdBy || spot.createdBy.toString() !== req.session.userId) return res.status(403).json({ error: 'You can only change spots you posted.' });
+        await db.collection('spots').deleteOne({ _id: spot._id });
+        await db.collection('cities').updateOne({ name: spot.city }, { $pull: { spots: spot.id } });
+        await db.collection('users').updateMany({}, { $pull: { bookmarks: spot.id, recentlyViewed: spot.id } });
+        res.json({ message: 'Spot deleted.' });
+    });
+
     router.get('/getCities', async (req, res) => {
         const cities = await db.collection('cities').find({}).toArray();
         res.json(cities);
@@ -109,31 +130,15 @@ module.exports = (db) => {
 
     router.get('/searchSpots', async (req,res) => {
         const { query, city } = req.query;
-
-        if (!query || !city){
-            return res.status(400).json({ error: 'Query and city are required.' });
-        }
+        if (!query || !city) return res.status(400).json({ error: 'Query and city are required.' });
         const spots = await db.collection('spots').find({city}).toArray();
-
         const aiUrl = process.env.AI_URL || "http://127.0.0.1:8000";
-        const rankedSpots = await fetch(`${aiUrl}/rank`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ query, spots: spots.map(({ id, title, description }) => ({ id, title, description })) })
-        });
-
-        if (!rankedSpots.ok) {
-            return res.status(500).json({ error: 'Failed to rank spots.' });
-        }
-
+        const rankedSpots = await fetch(`${aiUrl}/rank`, {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({ query, spots: spots.map(({ id, title, description }) => ({ id, title, description })) })});
+        if (!rankedSpots.ok) return res.status(500).json({ error: 'Failed to rank spots.' });
         const {matches} = await rankedSpots.json();
         const spotsById = new Map(spots.map(spot => [spot.id, spot]));
-
         res.json(matches.map( ({id,score}) => ({...spotsById.get(id), score}) ));
     });
-
 
     return router;
 };
