@@ -2,7 +2,8 @@
   "scripts": {
     "start": "node index.js",
     "test": "jest",
-    "test:integration": "node integration/run.js"
+    "test:integration": "node integration/run.js",
+    "seed": "node tools/seed.js"
   },
   "jest": {
     "testEnvironment": "node",
