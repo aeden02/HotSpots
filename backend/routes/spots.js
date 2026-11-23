@@ -71,6 +71,15 @@ module.exports = (db) => {
         res.json(spots);
     });
 
+    router.post('/getSpotsByCategory', async (req, res) => {
+        const { category, city } = req.body ?? {};
+        if (typeof category !== 'string' || !category.trim() || typeof city !== 'string' || !city.trim()) {
+            return res.status(400).json({ error: 'Category and city are required.' });
+        }
+        const spots = await db.collection('spots').find({ city, category }).toArray();
+        res.json(spots);
+    });
+
     router.post('/createSpot', async (req, res) => {
         if (!req.session.userId) return res.status(401).json({ error: 'Not logged in.' });
         const { title, description, banner, category, address } = req.body;

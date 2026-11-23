@@ -44,3 +44,26 @@ jobs:
       - uses: actions/checkout@v4
       - run: docker compose config --quiet
       - run: docker compose build
+
+  integration:
+    # Runs the whole stack in Docker Compose and tests it end to end.
+    # Slower than the other jobs: the AI container downloads a ~1.7 GB model on each run.
+    needs: [backend, docker]
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+          cache-dependency-path: backend/package-lock.json
+      - run: npm ci
+        working-directory: backend
+      - run: npm run test:integration
+        working-directory: backend
+      - name: Show container logs on failure
+        if: failure()
+        run: docker compose logs --tail 100
+      - run: docker compose down -v
+        if: always()
