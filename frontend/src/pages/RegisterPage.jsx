@@ -20,6 +20,13 @@ export default function RegisterPage({ setUser }){
         .catch(() => setError("Couldn't load cities. Please refresh to try again."))
   }, [])
 
+  //hide error message 2 seconds after it appears. 
+  useEffect(() => {
+    if (!error) return
+    const timer = setTimeout(() => setError(''), 2000)
+    return () => clearTimeout(timer)
+  }, [error])
+
   async function handleSubmit(event){
     event.preventDefault()
 
@@ -28,24 +35,9 @@ export default function RegisterPage({ setUser }){
         return
     }
 
-    //check pw length. 
-    if(password.length < 8) {
-        setError('Password must be at least 8 characters.')
-        return
-    }
 
-    //check if at least 1 num.
-    if(!/[0-9]/.test(password)){
-        setError('Password must include at least 1 number.')
-        return
-    }
 
-    //check if at least 1 special char. 
-    if(!/[^A-Za-z0-9]/.test(password)){
-        setError('Password much include at least 1 special character.')
-        return
-    }
-
+    //password rules checked by backend. 
     try{
       await createAccount({ username, email, password, city })
       await login({ email, password })

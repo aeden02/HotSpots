@@ -50,7 +50,7 @@ export default function App() {
      <div className="content"> 
       <main className="container">
         <Routes>
-          <Route path="/" element={<HomePage />} />
+          <Route path="/" element={<HomePage user={user}/>} />
           <Route path="/login" element={<LoginPage setUser={setUser} />} />
           <Route path="/register" element={<RegisterPage setUser={setUser} />} />
           <Route path="/submit" element={<SubmitSpotPage user={user} />} />

@@ -45,7 +45,7 @@ export default function SpotListPage() {
 
         return (
             <section>
-                <Link to="/" className="back-link">Change city</Link>
+                <Link to="/?pick" className="back-link">Change city</Link>
                 <h1>Spots in {city}</h1>
                 
                 {spots.length === 0 ? (

@@ -1,5 +1,5 @@
 import { Link } from 'react-router'
-import { categoryLabel } from '../utils/categories'
+import { tagLabel } from '../utils/tags'
 
 export default function SpotCard({ spot }){
     return(
@@ -10,7 +10,7 @@ export default function SpotCard({ spot }){
                 <div className="spot-card-photo placeholder" aria-hidden="true" />
             )}
             <div className="spot-card-body">
-                <span className="badge">{categoryLabel(spot.category)}</span>
+                {spot.tags?.length > 0 && <span className="badge">{tagLabel(spot.tags[0])}</span>}
                 <h2>{spot.title}</h2>
                 <p>{spot.description}</p>
             </div>

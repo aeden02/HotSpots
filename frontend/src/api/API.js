@@ -24,7 +24,7 @@ export const getAllUsers = () => data(api.get('/users/getAllUsers'));
 export const seedCity = (city) => data(api.post('/spots/seedCity', { city }));
 export const getSpot = (slug) => data(api.get(`/spots/getSpot/${enc(slug)}`));
 export const getSpotsByCity = (city) => data(api.get(`/spots/getSpotsByCity/${enc(city)}`));
-export const createSpot = ({ title, description, banner, category, address, tags = [] }) => data(api.post('/spots/createSpot', { title, description, banner, category, address, tags }));
+export const createSpot = ({ title, description, banner, address, lat, lng}) => data(api.post('/spots/createSpot', { title, description, banner, address, lat, lng }));
 export const getCities = () => data(api.get('/spots/getCities'));
 export const getCityById = (id) => data(api.get(`/spots/getCityById/${enc(id)}`));
 export const searchSpots = ({ query, city }) => data(api.get('/spots/searchSpots', { params: { query, city } }));

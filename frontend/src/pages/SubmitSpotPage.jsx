@@ -88,13 +88,13 @@ export default function SubmitSpotPage({ user }){
 
                     <div className="form-row">
                         <label htmlFor="tags">Tags (optional)</label>
-                        <input id="tags" palceholder="coffee, quiet, wifi" vaule={tags} onChange={(e) => setTags(e.target.value)} />
+                        <input id="tags" placeholder="coffee, quiet, wifi" value={tags} onChange={(e) => setTags(e.target.value)} />
                     </div>
 
                     {error && <p className="form-error">{error}</p>}
                     {success && <p className="form-success">{success}</p>}
 
-                    <div className="form-actions">
+                    <div className="form-action">
                         <button type="submit">Submit spot</button>
                     </div>
                 </form>
