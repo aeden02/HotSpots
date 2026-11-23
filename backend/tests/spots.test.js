@@ -258,6 +258,133 @@ describe('spots routes', () => {
         });
     });
 
+    describe('editing and deleting posts', () => {
+        let owner;
+        let ownerAgent;
+        let spot;
+
+        beforeEach(async () => {
+            await addCity({ spots: ['mine', 'osm'] });
+            owner = await insertUser(ctx.db);
+            ownerAgent = await loginAs(ctx.app, owner);
+            spot = makeSpot({ id: 'mine', title: 'Old Title', tags: ['a'], createdBy: owner._id });
+            await ctx.db.collection('spots').insertMany([spot, makeSpot({ id: 'osm', createdBy: null })]);
+        });
+
+        const stored = (id) => ctx.db.collection('spots').findOne({ id });
+        const otherUserAgent = async () => loginAs(ctx.app, await insertUser(ctx.db, { username: 'mallory', email: 'mallory@example.com' }));
+
+        describe('PATCH /spots/updatePost', () => {
+            test('lets the creator change fields and returns the updated spot', async () => {
+                const res = await ownerAgent.patch('/api/v1/spots/updatePost').send({ slug: 'mine', title: 'New Title', tags: ['b', 'c'] });
+                expect(res.status).toBe(200);
+                expect(res.body.message).toBe('Spot updated.');
+                expect(res.body.spot).toMatchObject({ id: 'mine', title: 'New Title', tags: ['b', 'c'] });
+                expect(await stored('mine')).toMatchObject({ title: 'New Title', tags: ['b', 'c'], description: spot.description });
+            });
+
+            test('ignores fields that are not editable', async () => {
+                await ownerAgent.patch('/api/v1/spots/updatePost').send({ slug: 'mine', description: 'new', city: 'Elsewhere', createdBy: 'x', id: 'hijack' });
+                const s = await stored('mine');
+                expect(s).toMatchObject({ description: 'new', city: CITY, id: 'mine' });
+                expect(s.createdBy).toEqual(owner._id);
+            });
+
+            test('returns 403 for someone who did not post it', async () => {
+                const agent = await otherUserAgent();
+                const res = await agent.patch('/api/v1/spots/updatePost').send({ slug: 'mine', title: 'Hacked' });
+                expect(res.status).toBe(403);
+                expect((await stored('mine')).title).toBe('Old Title');
+            });
+
+            test('returns 403 even if the body claims to be the creator', async () => {
+                const agent = await otherUserAgent();
+                const res = await agent.patch('/api/v1/spots/updatePost').send({ slug: 'mine', userId: owner._id.toString(), createdBy: owner._id.toString(), title: 'Hacked' });
+                expect(res.status).toBe(403);
+            });
+
+            test('returns 403 for imported spots with no creator', async () => {
+                const res = await ownerAgent.patch('/api/v1/spots/updatePost').send({ slug: 'osm', title: 'Mine now' });
+                expect(res.status).toBe(403);
+            });
+
+            test('returns 401 when not logged in', async () => {
+                const res = await request(ctx.app).patch('/api/v1/spots/updatePost').send({ slug: 'mine', title: 'x' });
+                expect(res.status).toBe(401);
+            });
+
+            test('returns 404 for an unknown slug', async () => {
+                const res = await ownerAgent.patch('/api/v1/spots/updatePost').send({ slug: 'missing', title: 'x' });
+                expect(res.status).toBe(404);
+            });
+
+            test.each([
+                ['no slug', { title: 'x' }],
+                ['empty title', { slug: 'mine', title: '  ' }],
+                ['tags not an array', { slug: 'mine', tags: 'a' }],
+                ['nothing to change', { slug: 'mine' }],
+            ])('returns 400 for %s', async (_, body) => {
+                const res = await ownerAgent.patch('/api/v1/spots/updatePost').send(body);
+                expect(res.status).toBe(400);
+                expect((await stored('mine')).title).toBe('Old Title');
+            });
+        });
+
+        test('a spot made with createSpot can be edited and deleted by its creator only', async () => {
+            const created = await ownerAgent.post('/api/v1/spots/createSpot').send({ title: 'Fresh Spot', description: 'd', category: 'food', tags: [] });
+            expect(created.status).toBe(201);
+            const slug = created.body.id;
+            expect((await stored(slug)).createdBy).toEqual(owner._id);
+
+            const intruder = await otherUserAgent();
+            expect((await intruder.patch('/api/v1/spots/updatePost').send({ slug, title: 'Nope' })).status).toBe(403);
+            expect((await intruder.delete(`/api/v1/spots/deletePost/${slug}`)).status).toBe(403);
+
+            expect((await ownerAgent.patch('/api/v1/spots/updatePost').send({ slug, description: 'edited' })).status).toBe(200);
+            expect((await stored(slug)).description).toBe('edited');
+            expect((await ownerAgent.delete(`/api/v1/spots/deletePost/${slug}`)).status).toBe(200);
+            expect(await stored(slug)).toBeNull();
+            expect(await stored('mine')).not.toBeNull(); // other spots untouched
+        });
+
+        describe('DELETE /spots/deletePost/:slug', () => {
+            test('lets the creator delete it and cleans up references', async () => {
+                const fan = await insertUser(ctx.db, { username: 'fan', email: 'fan@example.com', bookmarks: ['mine', 'osm'], recentlyViewed: ['osm', 'mine'] });
+                const res = await ownerAgent.delete('/api/v1/spots/deletePost/mine');
+                expect(res.status).toBe(200);
+                expect(res.body).toEqual({ message: 'Spot deleted.' });
+                expect(await stored('mine')).toBeNull();
+                expect((await ctx.db.collection('cities').findOne({ name: CITY })).spots).toEqual(['osm']);
+                const after = await ctx.db.collection('users').findOne({ _id: fan._id });
+                expect(after.bookmarks).toEqual(['osm']);
+                expect(after.recentlyViewed).toEqual(['osm']);
+            });
+
+            test('returns 403 for someone who did not post it', async () => {
+                const agent = await otherUserAgent();
+                const res = await agent.delete('/api/v1/spots/deletePost/mine');
+                expect(res.status).toBe(403);
+                expect(await stored('mine')).not.toBeNull();
+            });
+
+            test('returns 403 for imported spots with no creator', async () => {
+                const res = await ownerAgent.delete('/api/v1/spots/deletePost/osm');
+                expect(res.status).toBe(403);
+                expect(await stored('osm')).not.toBeNull();
+            });
+
+            test('returns 401 when not logged in', async () => {
+                const res = await request(ctx.app).delete('/api/v1/spots/deletePost/mine');
+                expect(res.status).toBe(401);
+            });
+
+            test('returns 404 for an unknown slug', async () => {
+                const res = await ownerAgent.delete('/api/v1/spots/deletePost/missing');
+                expect(res.status).toBe(404);
+            });
+        });
+    });
+
     describe('GET /spots/getCities', () => {
         test('returns every city', async () => {
             await ctx.db.collection('cities').insertMany([{ name: 'A', spots: [] }, { name: 'B', spots: [] }]);

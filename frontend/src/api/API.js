@@ -28,6 +28,10 @@ export const createSpot = ({ title, description, banner, category, address, tags
 export const getCities = () => data(api.get('/spots/getCities'));
 export const getCityById = (id) => data(api.get(`/spots/getCityById/${enc(id)}`));
 export const searchSpots = ({ query, city }) => data(api.get('/spots/searchSpots', { params: { query, city } }));
+export const getSpotsByCategory = ({ category, city }) => data(api.post('/spots/getSpotsByCategory', { category, city }));
+// Only the logged-in creator can edit/delete; pass just the fields you want to change.
+export const updatePost = (slug, changes) => data(api.patch('/spots/updatePost', { ...changes, slug }));
+export const deletePost = (slug) => data(api.delete(`/spots/deletePost/${enc(slug)}`));
 
 // filter
 export const filterByCategory = ({ city, category }) => data(api.post('/filter/category', { city, category }));
