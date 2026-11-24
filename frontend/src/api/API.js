@@ -37,6 +37,9 @@ export const deletePost = (slug) => data(api.delete(`/spots/deletePost/${enc(slu
 export const filterByCategory = ({ city, category }) => data(api.post('/filter/category', { city, category }));
 export const filterByTags = ({ city, tags = [] }) => data(api.post('/filter/tags', { city, tags }));
 
+//AI search
+export const rankSpots = ({ query, city }) => data(api.post(`/rank/rank`, { query, city }));
+
 // bookmark
 export const bookmarkSpot = (slug) => data(api.post(`/bookmark/${enc(slug)}`));
 
