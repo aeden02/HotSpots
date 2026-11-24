@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react' 
 import { Link, useNavigate, useParams } from 'react-router'
 import { getSpot } from '../api/API'
-import { categoryLabel } from '../utils/categories'
+import { tagLabel } from '../utils/tags'
 
 export default function SpotDetailModal(){
     const { city, spotId } = useParams()
@@ -76,7 +76,7 @@ export default function SpotDetailModal(){
                             <img src={spot.banner} alt={spot.title} className="modal-photo" />
 
                         )}
-                        <span className="badge">{categoryLabel(spot.category)}</span>
+                        
                         <h2>{spot.title}</h2>
                         <p>{spot.description}</p>
 
@@ -93,7 +93,7 @@ export default function SpotDetailModal(){
                         {spot.tags?.length > 0 && (
                             <ul className="tags">
                                 {spot.tags.map((tag) => (
-                                    <li key={tag}>{tag}</li>
+                                    <li key={tag}>{tagLabel(tag)}</li>
                                 ))}
                             </ul>
                         )}

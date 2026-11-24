@@ -45,13 +45,16 @@ export default function SpotListPage() {
 
         return (
             <section>
-                <Link to="/" className="back-link">Change city</Link>
-                <h1>Spots in {city}</h1>
-                
+                <div className="mb=8">
+                    <Link to="/?pick" className="back-link text-sm">Change city</Link>
+                    <h1 className="mt-1 text-4xl font-bold tracking-tight">Spots in {city}</h1>
+                    <p className="mt-2 text-text-muted">Local favorites shared by locals. </p>
+                </div>
+
                 {spots.length === 0 ? (
                     <p className="status">No spots in this city yet.</p>
                 ) : (
-                    <div className="spot-grid">
+                    <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                         {spots.map((spot)=> (
                             <SpotCard key={spot.id} spot={spot} />
                     ))}

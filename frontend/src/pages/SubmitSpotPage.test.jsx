@@ -9,6 +9,9 @@ vi.mock('../api/API', () => ({
   createSpot: vi.fn(),
 }))
 
+//map isnt needed in tests. 
+vi.mock('../components/MapPicker', () => ({ default: () => null }))
+
 const member = { username: 'sam', city: 'Fort Smith' }
 
 function renderPage(user) {
@@ -36,17 +39,15 @@ test('sends the spot and shows a success message', async () => {
 
   fireEvent.change(screen.getByLabelText('Name'), { target: { value: 'Fort Smith Coffee Co.' } })
   fireEvent.change(screen.getByLabelText('Description'), { target: { value: 'Quiet cafe for studying.' } })
-  fireEvent.change(screen.getByLabelText('Category'), { target: { value: 'food' } })
   fireEvent.change(screen.getByLabelText('Address'), { target: { value: 'Fort Smith, AR' } })
-  fireEvent.change(screen.getByLabelText('Tags (optional)'), { target: { value: 'coffee, quiet' } })
   fireEvent.click(screen.getByRole('button', { name: 'Submit spot' }))
 
   expect(await screen.findByText(/your spot was submitted/i)).toBeTruthy()
   expect(createSpot).toHaveBeenCalledWith({
     title: 'Fort Smith Coffee Co.',
     description: 'Quiet cafe for studying.',
-    category: 'food',
     address: 'Fort Smith, AR',
-    tags: ['coffee', 'quiet'],
+    lat: undefined, 
+    lng: undefined, 
   })
 })

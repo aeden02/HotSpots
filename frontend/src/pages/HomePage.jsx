@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router'
+import { Navigate, useNavigate, useSearchParams } from 'react-router'
 import { getCities } from '../api/API'
 
-export default function HomePage() {
+export default function HomePage({ user }) {
+  const [searchParams] = useSearchParams()
   const [cities, setCities] = useState([])
   const [status, setStatus] = useState('loading') // 'loading' | 'ready' | 'error'
   const [selected, setSelected] = useState('')
@@ -21,6 +22,11 @@ export default function HomePage() {
   function handleSubmit(event) {
     event.preventDefault()
     if (selected) navigate(`/cities/${encodeURIComponent(selected)}`)
+  }
+
+  //signed-in users go straight to city's listings. if click "Change city", show menu. 
+  if (user && !searchParams.has('pick')) {
+    return <Navigate to={`/cities/${encodeURIComponent(user.city)}`} replace />
   }
 
   if (status === 'loading') {
