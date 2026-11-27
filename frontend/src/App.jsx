@@ -8,6 +8,7 @@ import LoginPage from './pages/LoginPage'
 import RegisterPage from './pages/RegisterPage'
 import SubmitSpotPage from './pages/SubmitSpotPage'
 import ProfilePage from './pages/ProfilePage'
+import PlannerPage from './pages/PlannerPage'
 import { getMe, logout } from './api/API'
 import logo from './assets/hotspots-mark-mono-white.svg'
 
@@ -34,9 +35,11 @@ export default function App() {
 
         <nav aria-label="Main">
           <NavLink to="/" end className="nav-link">Home</NavLink>
+          <NavLink to={`/cities/${encodeURIComponent(user?.city ?? 'Fort Smith')}`} end className="nav-link">Listings</NavLink>
          {user ? (
           <>
             <span className="nav-link">Signed in as {user.username}</span> 
+            <NavLink to={`/cities/${encodeURIComponent(user?.city ?? 'Fort Smith')}/plan`} className="nav-link">Plan my day</NavLink>
             <NavLink to="/profile" className="nav-link">My Profile</NavLink>
             <NavLink to="/submit" className="nav-link">Submit a spot</NavLink>
             <button type="button" onClick={handleSignOut}>Sign out</button>
@@ -54,11 +57,14 @@ export default function App() {
      <div className="content"> 
       <main className="page">
         <Routes>
-          <Route path="/" element={<HomePage user={user}/>} />
+          <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<LoginPage setUser={setUser} />} />
           <Route path="/register" element={<RegisterPage setUser={setUser} />} />
           <Route path="/submit" element={<SubmitSpotPage user={user} />} />
           <Route path="/profile" element={<ProfilePage user={user} />} />
+          <Route path="/cities/:city/plan" element={<PlannerPage />} >
+            <Route path="spots/:spotId" element={<SpotDetailModal user={user} setUser={setUser} />} />
+          </Route>
           <Route path="/cities/:city" element={<SpotListPage />} >
             <Route path="spots/:spotId" element={<SpotDetailModal user={user} setUser={setUser} />} />
           </Route>

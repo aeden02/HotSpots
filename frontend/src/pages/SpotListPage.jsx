@@ -102,7 +102,7 @@ export default function SpotListPage() {
         return (
             <section>
                 <div className="mb-8">
-                    <Link to="/?pick" className="back-link text-sm">Change city</Link>
+                    <Link to="/" className="back-link text-sm">Change city</Link>
                     <h1 className="mt-1 text-4xl font-bold tracking-tight">Spots in {city}</h1>
                     <p className="mt-2 text-text-muted">Local favorites shared by locals. </p>
                 </div>
