@@ -4,5 +4,6 @@ COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 ENV HOST=0.0.0.0
+ENV OLLAMA_URL=http://ollama:11434
 EXPOSE 8000
 CMD ["python", "-u", "server.py"]
