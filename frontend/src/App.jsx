@@ -7,6 +7,7 @@ import NotFoundPage from './pages/NotFoundPage'
 import LoginPage from './pages/LoginPage'
 import RegisterPage from './pages/RegisterPage'
 import SubmitSpotPage from './pages/SubmitSpotPage'
+import ProfilePage from './pages/ProfilePage'
 import { getMe, logout } from './api/API'
 import logo from './assets/hotspots-mark-mono-white.svg'
 
@@ -35,8 +36,9 @@ export default function App() {
           <NavLink to="/" end className="nav-link">Home</NavLink>
          {user ? (
           <>
-            <NavLink to="/submit" className="nav-link">Submit a spot</NavLink>
             <span className="nav-link">Signed in as {user.username}</span> 
+            <NavLink to="/profile" className="nav-link">My Profile</NavLink>
+            <NavLink to="/submit" className="nav-link">Submit a spot</NavLink>
             <button type="button" onClick={handleSignOut}>Sign out</button>
           </>
          ) : (
@@ -50,14 +52,15 @@ export default function App() {
       </header>
       
      <div className="content"> 
-      <main className="container">
+      <main className="page">
         <Routes>
           <Route path="/" element={<HomePage user={user}/>} />
           <Route path="/login" element={<LoginPage setUser={setUser} />} />
           <Route path="/register" element={<RegisterPage setUser={setUser} />} />
           <Route path="/submit" element={<SubmitSpotPage user={user} />} />
+          <Route path="/profile" element={<ProfilePage user={user} />} />
           <Route path="/cities/:city" element={<SpotListPage />} >
-            <Route path="spots/:spotId" element={<SpotDetailModal />} />
+            <Route path="spots/:spotId" element={<SpotDetailModal user={user} setUser={setUser} />} />
           </Route>
           <Route path="*" element={<NotFoundPage />} />
         </Routes>

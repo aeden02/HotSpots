@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from 'react' 
 import { Link, useNavigate, useParams } from 'react-router'
-import { getSpot } from '../api/API'
+import { bookmarkSpot, getSpot, unbookmarkSpot } from '../api/API'
 import { tagLabel } from '../utils/tags'
 
-export default function SpotDetailModal(){
+export default function SpotDetailModal({ user, setUser }){
     const { city, spotId } = useParams()
     const cityPath = `/cities/${encodeURIComponent(city)}`
     const navigate = useNavigate()
@@ -11,6 +11,7 @@ export default function SpotDetailModal(){
     const [spot, setSpot] = useState(null)
     const [status, setStatus] = useState('loading') // loading, ready, error, notfound
     const [reloadKey, setReloadKey] = useState(0)
+    const [bookmarkError, setBookmarkError] = useState('')
 
     //open modal when component first appears
     useEffect(()=>{
@@ -41,6 +42,31 @@ export default function SpotDetailModal(){
     function retry(){
         setStatus('loading')
         setReloadKey((key) => key + 1)
+    }
+
+    //is this spot already in signed in users bookmarks?
+    const saved = spot && user?.bookmarks?.includes(spot.id)
+
+    //save and update so every page sees bookmark.
+    async function handleBookmark() {
+        setBookmarkError('')
+        try{
+            if(saved){
+                //already bookmarked - remove it and take out of list
+                await unbookmarkSpot(spot.id)
+                setUser({ ...user, bookmarks: user.bookmarks.filter((id) => id !== spot.id) })
+            }else{
+                await bookmarkSpot(spot.id)
+                setUser({ ...user, bookmarks: [...(user.bookmarks ?? []), spot.id ] })
+            }
+        } catch (err){
+            console.error('Bookmark failed: ', err) 
+            setBookmarkError(
+                err.repsonse?.status === 401
+                    ? 'Your session expired. Please sign in again to bookmark.'
+                    : err.repsonse?.data?.error ?? "Couldn't save this bookmark. Please try again."
+            )
+        }
     }
 
     //close when clicking outside of modal box 
@@ -76,8 +102,26 @@ export default function SpotDetailModal(){
                             <img src={spot.banner} alt={spot.title} className="modal-photo" />
 
                         )}
-                        
-                        <h2>{spot.title}</h2>
+                        <div className="flex items-start justify-between gap-3">
+                            <h2>{spot.title}</h2>
+                            {user && (
+                                <button 
+                                    type="button"
+                                    onClick={handleBookmark}
+                                    aria-pressed={!!saved}
+                                    aria-label={saved ? 'Remove Bookmark' : 'Bookmark this spot'}
+                                    title={saved ? 'Remove Bookmark' : 'Bookmark this spot'}
+                                    className="mr-8 shrink-0 rounded-full bg-transparent p-2 text-primary hover:bg-primary-tint"
+                                >
+                                    <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"
+                                        fill={saved ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth="2"
+                                        strokeLinecap="round" strokeLinejoin="round">
+                                        <path d="M12 21s-7-4.5-9.5-9A5.5 5.5 0 0 1 12 6a5.5 5.5 0 0 1 9.5 6c-2.5 4.5-9.5 9-9.5 9z" />
+                                    </svg>   
+                                </button>
+                            )}
+                        </div>
+                        {bookmarkError && <p className="form-errro">{bookmarkError}</p>}
                         <p>{spot.description}</p>
 
                         <dl className="spot-facts">
@@ -97,6 +141,8 @@ export default function SpotDetailModal(){
                                 ))}
                             </ul>
                         )}
+
+                       
                     </article>
                 )}
             </div>            

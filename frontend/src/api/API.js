@@ -42,5 +42,8 @@ export const rankSpots = ({ query, city }) => data(api.post(`/rank/rank`, { quer
 
 // bookmark
 export const bookmarkSpot = (slug) => data(api.post(`/bookmark/${enc(slug)}`));
+//TEMP - when replaced UNCOMMENT the replacement
+//export const unbookmarkSpot = (slug) => data(api.delete(`/bookmark/${enc(slug)}`));
+export const unbookmarkSpot = async (slug) => ({message: `Bookmark removed for ${slug}.`});
 
 export default api;
