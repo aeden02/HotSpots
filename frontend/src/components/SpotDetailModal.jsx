@@ -4,8 +4,7 @@ import { bookmarkSpot, getSpot, unbookmarkSpot } from '../api/API'
 import { tagLabel } from '../utils/tags'
 
 export default function SpotDetailModal({ user, setUser }){
-    const { city, spotId } = useParams()
-    const cityPath = `/cities/${encodeURIComponent(city)}`
+    const { spotId } = useParams()
     const navigate = useNavigate()
     const dialogRef = useRef(null)
     const [spot, setSpot] = useState(null)
@@ -36,7 +35,7 @@ export default function SpotDetailModal({ user, setUser }){
     return () => { ignore = true }}, [spotId, reloadKey])
 
     function close(){
-        navigate(cityPath)
+        navigate('..')
     }
 
     function retry(){
@@ -62,9 +61,9 @@ export default function SpotDetailModal({ user, setUser }){
         } catch (err){
             console.error('Bookmark failed: ', err) 
             setBookmarkError(
-                err.repsonse?.status === 401
+                err.response?.status === 401
                     ? 'Your session expired. Please sign in again to bookmark.'
-                    : err.repsonse?.data?.error ?? "Couldn't save this bookmark. Please try again."
+                    : err.response?.data?.error ?? "Couldn't save this bookmark. Please try again."
             )
         }
     }
@@ -85,7 +84,7 @@ export default function SpotDetailModal({ user, setUser }){
                     <div className="status">
                         <h2>Spot not found</h2>
                         <p>Sorry, we couldn't find the spot you were looking for.</p>
-                        <Link to={cityPath}>Back to spots</Link>
+                        <Link to="..">Back to spots</Link>
                     </div>
                 )}
 
@@ -121,7 +120,7 @@ export default function SpotDetailModal({ user, setUser }){
                                 </button>
                             )}
                         </div>
-                        {bookmarkError && <p className="form-errro">{bookmarkError}</p>}
+                        {bookmarkError && <p className="form-error">{bookmarkError}</p>}
                         <p>{spot.description}</p>
 
                         <dl className="spot-facts">

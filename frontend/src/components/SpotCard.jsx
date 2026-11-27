@@ -1,5 +1,6 @@
 import { Link } from 'react-router'
 import { tagLabel } from '../utils/tags'
+import SpotImage from './SpotImage'
 
 export default function SpotCard({ spot }){
     return(
@@ -7,11 +8,7 @@ export default function SpotCard({ spot }){
             to={`/cities/${encodeURIComponent(spot.city)}/spots/${spot.id}`}
             className="block overflow-hidden rounded-xl bg-white text-inherit no-underline shadow-sm ring-1 ring-black/5 transition hover:-translate-y-0.5 hover:shadow-md"
         >
-            {spot.banner ? (
-                <img src={spot.banner} alt="" className="h-40 w-full object-cover" />
-            ) : (
-                <div className="h-40 w-full bg-primary-tint" aria-hidden="true" />
-            )}
+           <SpotImage spot={spot} className="h-40 w-full" />
             <div className="p-4">
                 {spot.tags?.length > 0 && (
                     <span className="inline-block rounded-full bg-primary-tint px-2.5 py-0.5 text-xs font-medium text-primary">
