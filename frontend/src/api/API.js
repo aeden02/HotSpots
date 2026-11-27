@@ -40,6 +40,10 @@ export const filterByTags = ({ city, tags = [] }) => data(api.post('/filter/tags
 //AI search
 export const rankSpots = ({ query, city }) => data(api.post(`/rank/rank`, { query, city }));
 
+//AI itinerary Gives up after 15 seconds so the page can fall back. 
+export const buildItinerary = ({ city, date, start, end, interests }) =>
+    data(api.post('/itinerary/build', { city, date, start, end, interests }, { timeout: 15000}));
+
 // bookmark
 export const bookmarkSpot = (slug) => data(api.post(`/bookmark/${enc(slug)}`));
 //TEMP - when replaced UNCOMMENT the replacement
