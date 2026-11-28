@@ -25,6 +25,7 @@ export const seedCity = (city) => data(api.post('/spots/seedCity', { city }));
 export const getSpot = (slug) => data(api.get(`/spots/getSpot/${enc(slug)}`));
 export const getSpotsByCity = (city) => data(api.get(`/spots/getSpotsByCity/${enc(city)}`));
 export const createSpot = ({ title, description, banner, address, lat, lng}) => data(api.post('/spots/createSpot', { title, description, banner, address, lat, lng }));
+export const addReview = (slug, review) => data(api.post('/spots/addReview', { slug, review }));
 export const getCities = () => data(api.get('/spots/getCities'));
 export const getCityById = (id) => data(api.get(`/spots/getCityById/${enc(id)}`));
 export const searchSpots = ({ query, city }) => data(api.get('/spots/searchSpots', { params: { query, city } }));
@@ -39,10 +40,18 @@ export const filterByTags = ({ city, tags = [] }) => data(api.post('/filter/tags
 
 //AI search
 export const rankSpots = ({ query, city }) => data(api.post(`/rank/rank`, { query, city }));
+export const generateSpotTags = ({ title, description }) => data(api.post('/ai/tags', { title, description }));
+export const generateThemes = (city) => data(api.post('/ai/themes', { city }));
 
 //AI itinerary Gives up after 15 seconds so the page can fall back. 
 export const buildItinerary = ({ city, date, start, end, interests }) =>
     data(api.post('/itinerary/build', { city, date, start, end, interests }, { timeout: 15000}));
+
+// reports
+export const reportSpot = (spotId, reason) => data(api.post('/report', { spotId, reason }));
+export const getReports = () => data(api.get('/report'));
+export const ignoreReport = (reportId) => data(api.delete(`/report/${enc(reportId)}`));
+export const removeReportedSpot = (reportId) => data(api.delete(`/report/${enc(reportId)}/spot`));
 
 // bookmark
 export const bookmarkSpot = (slug) => data(api.post(`/bookmark/${enc(slug)}`));
