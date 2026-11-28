@@ -18,7 +18,7 @@ async function seedCity(db, cityName) {
     if (!city) return null;
     try {
         const osmSpots = await getOsmSpots(city.name);
-        const docs = osmSpots.map(s => ({ id: makeSlug(s.title), ...s, city: city.name, createdBy: null, ratings: [], events: [] }));
+        const docs = osmSpots.map(s => ({ id: makeSlug(s.title), ...s, city: city.name, createdBy: null, ratings: [], reviews: [], events: [] }));
         if (docs.length) await db.collection('spots').insertMany(docs);
         await cities.updateOne({ _id: city._id }, { $push: { spots: { $each: docs.map(d => d.id) } } });
         return docs.map(d => d.id);
@@ -53,6 +53,25 @@ module.exports = (db) => {
         res.json(spot);
     });
 
+    router.post('/addReview', async (req, res) => {
+        if (!req.session.userId) return res.status(401).json({ error: 'Not logged in.' });
+        const { slug, review } = req.body ?? {};
+        if (typeof slug !== 'string' || !slug.trim()) return res.status(400).json({ error: 'Spot slug is required.' });
+        if (typeof review !== 'string' || !review.trim()) return res.status(400).json({ error: 'Review is required.' });
+        const spot = await db.collection('spots').findOne({ id: slug });
+        if (!spot) return res.status(404).json({ error: 'Spot not found.' });
+        const user = await db.collection('users').findOne({ _id: new ObjectId(req.session.userId) });
+        if (!user) return res.status(401).json({ error: 'Not logged in.' });
+        const reviewEntry = {
+            review: review.trim(),
+            userId: user._id,
+            author: user.username,
+            createdAt: new Date(),
+        };
+        await db.collection('spots').updateOne({ _id: spot._id }, { $push: { reviews: reviewEntry } });
+        res.status(201).json({ message: 'Review added.', review: reviewEntry });
+    });
+
     router.get('/getSpotsByCity/:city', async (req, res) => {
         const spots = await db.collection('spots').find({ city: req.params.city }).toArray();
         res.json(spots);
@@ -69,7 +88,7 @@ module.exports = (db) => {
 
     router.post('/createSpot', async (req, res) => {
         if (!req.session.userId) return res.status(401).json({ error: 'Not logged in.' });
-        const { title, description, banner, category, address } = req.body;
+        const { title, description, banner, category, address, lat, lng } = req.body;
         const tags = Array.isArray(req.body.tags) ? req.body.tags : [];
         if (typeof title !== 'string' || !title.trim()) return res.status(400).json({ error: 'Title is required.' });
         const user = await db.collection('users').findOne({ _id: new ObjectId(req.session.userId) });
@@ -77,7 +96,7 @@ module.exports = (db) => {
         const city = await cities.findOne({ name: user.city });
         if (!city) return res.status(403).json({ error: 'Your city is not a registered city.' });
         const id = makeSlug(title);
-        await db.collection('spots').insertOne({id,title,description,banner,category,address,tags,city: city.name,createdBy: user._id,ratings: [],events: []});
+        await db.collection('spots').insertOne({id,title,description,banner,category,address,lat,lng,tags,city: city.name,createdBy: user._id,ratings: [],reviews: [],events: []});
         await cities.updateOne({ _id: city._id }, { $push: { spots: id } });
         res.status(201).json({ message: 'Spot created.', id });
     });
@@ -90,7 +109,7 @@ module.exports = (db) => {
         if (!spot) return res.status(404).json({ error: 'Spot not found.' });
         if (!spot.createdBy || spot.createdBy.toString() !== req.session.userId) return res.status(403).json({ error: 'You can only change spots you posted.' });
         const updates = {};
-        for (const field of ['title', 'description', 'banner', 'category', 'address']) {
+        for (const field of ['title', 'description', 'banner', 'category', 'address', 'lat', 'lng']) {
             if (body[field] !== undefined) updates[field] = body[field];
         }
         if (body.tags !== undefined) {

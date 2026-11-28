@@ -214,7 +214,7 @@ describe('spots routes', () => {
     });
 
     describe('POST /spots/createSpot', () => {
-        const body = { title: 'New Café', description: 'nice', banner: null, category: 'food', address: '2 Main St', tags: ['coffee'] };
+        const body = { title: 'New Café', description: 'nice', banner: null, category: 'food', address: '2 Main St', lat: 35.3859, lng: -94.3985, tags: ['coffee'] };
 
         test('creates a spot in the user\'s city', async () => {
             await addCity();
@@ -225,7 +225,7 @@ describe('spots routes', () => {
             expect(res.body.id).toMatch(/^new-cafe-[a-z0-9]{6}$/);
 
             const spot = await ctx.db.collection('spots').findOne({ id: res.body.id });
-            expect(spot).toMatchObject({ ...body, city: CITY, ratings: [], events: [] });
+            expect(spot).toMatchObject({ ...body, city: CITY, ratings: [], reviews: [], events: [] });
             expect(spot.createdBy).toEqual(user._id);
             const city = await ctx.db.collection('cities').findOne({ name: CITY });
             expect(city.spots).toContain(res.body.id);
@@ -258,6 +258,36 @@ describe('spots routes', () => {
         });
     });
 
+    describe('POST /spots/addReview', () => {
+        test('lets a signed-in user add a review which is returned with the spot', async () => {
+            const user = await insertUser(ctx.db);
+            const agent = await loginAs(ctx.app, user);
+            await ctx.db.collection('spots').insertOne(makeSpot({ id: 'reviewed', reviews: [] }));
+
+            const res = await agent.post('/api/v1/spots/addReview').send({ slug: 'reviewed', review: 'A lovely place.' });
+            expect(res.status).toBe(201);
+            expect(res.body.review).toMatchObject({ review: 'A lovely place.', author: user.username, userId: user._id.toString() });
+            expect(res.body.review.createdAt).toBeDefined();
+
+            const spot = await ctx.db.collection('spots').findOne({ id: 'reviewed' });
+            expect(spot.reviews).toHaveLength(1);
+            expect(spot.reviews[0]).toMatchObject({ review: 'A lovely place.', author: user.username, userId: user._id });
+            const fetched = await request(ctx.app).get('/api/v1/spots/getSpot/reviewed');
+            expect(fetched.body.reviews).toHaveLength(1);
+            expect(fetched.body.reviews[0].review).toBe('A lovely place.');
+        });
+
+        test('requires login and non-empty review text', async () => {
+            await ctx.db.collection('spots').insertOne(makeSpot({ id: 'reviewed' }));
+            const anonymous = await request(ctx.app).post('/api/v1/spots/addReview').send({ slug: 'reviewed', review: 'Review' });
+            expect(anonymous.status).toBe(401);
+
+            const agent = await loginAs(ctx.app, await insertUser(ctx.db));
+            const empty = await agent.post('/api/v1/spots/addReview').send({ slug: 'reviewed', review: '  ' });
+            expect(empty.status).toBe(400);
+        });
+    });
+
     describe('editing and deleting posts', () => {
         let owner;
         let ownerAgent;
@@ -276,11 +306,11 @@ describe('spots routes', () => {
 
         describe('PATCH /spots/updatePost', () => {
             test('lets the creator change fields and returns the updated spot', async () => {
-                const res = await ownerAgent.patch('/api/v1/spots/updatePost').send({ slug: 'mine', title: 'New Title', tags: ['b', 'c'] });
+                const res = await ownerAgent.patch('/api/v1/spots/updatePost').send({ slug: 'mine', title: 'New Title', tags: ['b', 'c'], lat: 35.3859, lng: -94.3985 });
                 expect(res.status).toBe(200);
                 expect(res.body.message).toBe('Spot updated.');
-                expect(res.body.spot).toMatchObject({ id: 'mine', title: 'New Title', tags: ['b', 'c'] });
-                expect(await stored('mine')).toMatchObject({ title: 'New Title', tags: ['b', 'c'], description: spot.description });
+                expect(res.body.spot).toMatchObject({ id: 'mine', title: 'New Title', tags: ['b', 'c'], lat: 35.3859, lng: -94.3985 });
+                expect(await stored('mine')).toMatchObject({ title: 'New Title', tags: ['b', 'c'], description: spot.description, lat: 35.3859, lng: -94.3985 });
             });
 
             test('ignores fields that are not editable', async () => {
