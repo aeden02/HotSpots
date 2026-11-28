@@ -37,7 +37,7 @@ services:
       - path: .env
         required: false
     environment:
-      - MONGODB_URI=mongodb://mongo:27017
+      - MONGODB_URI=${MONGODB_URI:-mongodb://mongo:27017}
       - AI_URL=http://ai:8000
       # Override in .env for anything other than local development.
       - SESSION_SECRET=${SESSION_SECRET:-dev-only-session-secret}

@@ -3,6 +3,7 @@ import os
 from http.server import BaseHTTPRequestHandler, HTTPServer
 
 from experiment import load_word_vectors, search
+from themes import generate_themes
 
 
 TAG_PROFILES = {
@@ -51,8 +52,30 @@ class RankHandler(BaseHTTPRequestHandler):
         self.wfile.write(body)
 
     def do_POST(self):
-        if self.path not in ("/rank", "/tags", "/recommend"):
+        if self.path not in ("/rank", "/tags", "/recommend", "/themes"):
             self.send_json(404, {"error": "Route not found"})
+            return
+
+        if self.path == "/themes":
+            try:
+                length = int(self.headers.get("Content-Length", 0))
+                if length <= 0:
+                    raise ValueError("A JSON request body is required")
+                data = json.loads(self.rfile.read(length))
+                spots = data.get("spots") if isinstance(data, dict) else None
+                if not isinstance(spots, list):
+                    raise ValueError("spots must be an array")
+                if any(
+                    not isinstance(spot, dict)
+                    or not isinstance(spot.get("id"), str)
+                    or not spot["id"].strip()
+                    for spot in spots
+                ):
+                    raise ValueError("Each spot must have a nonempty string id")
+            except ValueError as error:
+                self.send_json(400, {"error": str(error)})
+                return
+            self.send_json(200, generate_themes(spots))
             return
 
         length = int(self.headers["Content-Length"])
