@@ -1,6 +1,6 @@
 // Fetches random points of interest for a city from OpenStreetMap and shapes them
 // like the body POST /api/v1/spots/createSpot expects:
-//   { title, description, banner, category, address, tags }
+//   { title, description, banner, category, address, lat, lng, tags }
 //
 // Usage as a module:   const getOsmSpots = require('./tools/osmSpots');
 //                      const spots = await getOsmSpots('Fort Smith, AR');
@@ -108,12 +108,15 @@ function toSpot(element, cityName) {
     const tags = element.tags || {};
     const kind = classify(tags);
     if (!kind || !tags.name) return null;
+    const coordinates = element.center || element;
     return {
         title: tags.name,
         description: buildDescription(tags, kind, cityName),
         banner: bannerFrom(tags),
         category: 'Generated',
         address: formatAddress(tags, cityName),
+        lat: coordinates.lat,
+        lng: coordinates.lon,
         tags: [],
     };
 }
@@ -130,7 +133,7 @@ function shuffle(arr) {
  * Get `count` random spots for a city from OpenStreetMap.
  * @param {string} city  e.g. "Fort Smith, AR"
  * @param {number} [count=20]
- * @returns {Promise<Array<{title, description, banner, category, address, tags}>>}
+ * @returns {Promise<Array<{title, description, banner, category, address, lat, lng, tags}>>}
  */
 async function getOsmSpots(city, count = 20) {
     if (typeof city !== 'string' || !city.trim()) throw new Error('City is required.');
@@ -165,6 +168,7 @@ async function getOsmSpots(city, count = 20) {
 }
 
 module.exports = getOsmSpots;
+module.exports.toSpot = toSpot;
 
 if (require.main === module) {
     const [city, count] = process.argv.slice(2);
